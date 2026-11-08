@@ -1,0 +1,32 @@
+{
+  "timestamp": "2026-11-08T18:44:14.162Z",
+  "dataVersion": "bdf835f885274c4157c34f3976e54317aaeb53623f83cf91737abddd5d9dff3d",
+  "count": 85158,
+  "itemsSha256": "6e079d5880c906ec72b9e434bbbb0e1b3a898b3a7da1bdef632ecd6cdb8bc752",
+  "itemsBytes": 36302154,
+  "loadMs": 805,
+  "exactSearchMs": 315,
+  "originalDescriptionMatches": true,
+  "missingCategoryExcluded": true,
+  "missingDescriptionPreserved": true,
+  "desktopAnd320": true,
+  "queryApiRequests": 0,
+  "pageErrors": [],
+  "resources": [
+    {
+      "path": "/data/items-v1/current.json",
+      "durationMs": 6,
+      "decodedBytes": 308
+    },
+    {
+      "path": "/data/items-v1/versions/bdf835f885274c4157c34f3976e54317aaeb53623f83cf91737abddd5d9dff3d/manifest.json",
+      "durationMs": 4,
+      "decodedBytes": 682
+    },
+    {
+      "path": "/data/items-v1/versions/bdf835f885274c4157c34f3976e54317aaeb53623f83cf91737abddd5d9dff3d/items.json",
+      "durationMs": 135,
+      "decodedBytes": 36302154
+    }
+  ]
+}

@@ -309,9 +309,10 @@ legend {
   min-width: 0;
   container-type: inline-size;
 }
-.demo-notice {
+.data-notice {
   display: flex;
   align-items: center;
+  flex-wrap: wrap;
   gap: 8px;
   padding: 10px 28px;
   background: var(--accent);
@@ -320,7 +321,31 @@ legend {
   line-height: 1.7;
   color: var(--primary);
 }
-.demo-notice svg {
+.data-feedback {
+  flex: 1;
+  min-width: 180px;
+}
+.data-notice .button {
+  font-size: 11px;
+}
+.category-help {
+  margin-top: 12px;
+  font-size: 11px;
+  line-height: 1.7;
+}
+.conditions > #unsupported-filters {
+  margin-bottom: 12px;
+}
+.active-detail-tab {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 10px 2px;
+  font-size: 12px;
+  border-bottom: 2px solid var(--primary);
+  color: var(--primary);
+}
+.data-notice svg {
   width: 14px;
 }
 .search-area {
@@ -1287,12 +1312,12 @@ legend {
   .detail-tabs button {
     font-size: 12px;
   }
-  .demo-notice {
+  .data-notice {
     padding: 10px 18px;
     align-items: flex-start;
     font-size: 10px;
   }
-  .demo-notice svg {
+  .data-notice svg {
     margin-top: 2px;
   }
   .affix-list {

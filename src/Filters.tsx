@@ -5,10 +5,11 @@ import {
   SlidersHorizontal,
   X,
 } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import type { CategoryNode, DemoItem } from "./demo-model";
-import { flagLabels, levelFields } from "./demo-model";
-import { categoryTree, rangeError, values } from "./catalog";
+import { useEffect, useMemo, useRef, useState } from "react";
+import type { CategoryNode } from "./display-model";
+import type { Item } from "./item-data";
+import { flagLabels, levelFields } from "./display-model";
+import { categoryTree, values } from "./catalog";
 import { CheckLabel } from "./components";
 import type { Patch, Update } from "./navigation";
 
@@ -73,7 +74,7 @@ export function Filters({
   params,
   update,
 }: {
-  items: DemoItem[];
+  items: Item[];
   params: URLSearchParams;
   update: Update;
 }) {
@@ -98,12 +99,12 @@ export function Filters({
     group.includes(key)
       ? group.filter((value) => value !== key)
       : [...group, key];
-  const invalid = rangeError(params);
+  const tree = useMemo(() => categoryTree(items), [items]);
   return (
     <section className="search-area" aria-label="搜索与筛选">
       <div className="page-heading">
         <h1>道具图鉴</h1>
-        <p>浏览道具，查看属性、来源和用途。</p>
+        <p>搜索名称、编号与原说明，浏览已辨识分类。</p>
       </div>
       <form
         className="search-box"
@@ -150,23 +151,20 @@ export function Filters({
         ].map(([key, label]) => (
           <CheckLabel
             key={key}
-            checked={params.get(key) === "1"}
+            disabled={key !== "desc"}
+            checked={key === "desc" && params.get(key) === "1"}
             onChange={(checked) => filter({ [key]: checked ? "1" : null })}
           >
             {label}
+            {key !== "desc" && "（未接入）"}
           </CheckLabel>
         ))}
       </div>
       <div className="initial-filter">
-        <CheckLabel
-          checked={params.get("initial") !== "0"}
-          onChange={(checked) => filter({ initial: checked ? null : "0" })}
-        >
+        <CheckLabel disabled checked={false} onChange={() => {}}>
           只看初始状态
         </CheckLabel>
-        <span className="muted">
-          普通与觉醒版分别保留；详情内切换强化版本。
-        </span>
+        <span className="muted">初始形态资料未接入，筛选已停用。</span>
       </div>
       <details
         className="filter-box"
@@ -195,7 +193,7 @@ export function Filters({
               </button>
             </div>
             <Tree
-              nodes={categoryTree(items)}
+              nodes={tree}
               selected={selected}
               expanded={expanded}
               select={(key) =>
@@ -205,95 +203,59 @@ export function Filters({
                 update({ tree: toggle(key, expanded).join(",") })
               }
             />
+            <p className="muted category-help">
+              分类筛选只包含已辨识路径；清空分类可查看分类缺失的道具。
+            </p>
           </section>
-          <section className="conditions">
+          <fieldset
+            className="conditions"
+            disabled
+            aria-describedby="unsupported-filters"
+          >
+            <p className="muted" id="unsupported-filters">
+              职业、等级、属性和途径资料未接入，相关筛选已停用。
+            </p>
             <label className="select-label">
               职业条件
-              <select
-                aria-label="职业条件"
-                value={params.get("job") || ""}
-                onChange={(event) => filter({ job: event.target.value })}
-              >
-                <option value="">不限</option>
-                {[...new Set(items.flatMap((item) => item.jobs || []))].map(
-                  (job) => (
-                    <option key={job}>{job}</option>
-                  ),
-                )}
+              <select aria-label="职业条件" value="" onChange={() => {}}>
+                <option value="">资料未接入</option>
               </select>
             </label>
-            <p className="muted">
-              按明确职业成员匹配，不表示完整的可装备资格。
-            </p>
             {levelFields.map(([key, , label]) => (
               <fieldset className="level-range" key={key}>
                 <legend>{label}</legend>
                 <input
                   inputMode={key === "lii" ? "decimal" : "numeric"}
                   aria-label={`${label}最低`}
-                  aria-invalid={!!invalid}
-                  aria-describedby={invalid ? "range-error" : undefined}
-                  placeholder="最低"
-                  value={params.get(`${key}min`) || ""}
-                  onChange={(event) =>
-                    filter({ [`${key}min`]: event.target.value })
-                  }
+                  placeholder="未接入"
+                  value=""
+                  readOnly
                 />
                 <span>至</span>
                 <input
                   inputMode={key === "lii" ? "decimal" : "numeric"}
                   aria-label={`${label}最高`}
-                  aria-invalid={!!invalid}
-                  aria-describedby={invalid ? "range-error" : undefined}
-                  placeholder="最高"
-                  value={params.get(`${key}max`) || ""}
-                  onChange={(event) =>
-                    filter({ [`${key}max`]: event.target.value })
-                  }
+                  placeholder="未接入"
+                  value=""
+                  readOnly
                 />
               </fieldset>
             ))}
-            {invalid && (
-              <p className="validation" id="range-error" role="alert">
-                {invalid}
-              </p>
-            )}
             <div className="flag-filters">
               {Object.entries(flagLabels).map(([key, label]) => (
                 <label className="select-label" key={key}>
                   {label}
                   <select
                     aria-label={`${label}筛选`}
-                    value={params.get(key) || ""}
-                    onChange={(event) => filter({ [key]: event.target.value })}
+                    value=""
+                    onChange={() => {}}
                   >
-                    <option value="">不限</option>
-                    <option value="1">可以</option>
-                    <option value="0">不可以</option>
+                    <option value="">资料未接入</option>
                   </select>
                 </label>
               ))}
             </div>
-            <button
-              className="button"
-              onClick={() =>
-                filter(
-                  Object.fromEntries(
-                    [
-                      "job",
-                      ...levelFields.flatMap(([key]) => [
-                        `${key}min`,
-                        `${key}max`,
-                      ]),
-                      ...Object.keys(flagLabels),
-                    ].map((key) => [key, null]),
-                  ),
-                )
-              }
-            >
-              清空使用条件
-            </button>
-          </section>
+          </fieldset>
         </div>
       </details>
     </section>

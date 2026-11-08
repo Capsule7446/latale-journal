@@ -6,66 +6,50 @@ import {
   filterItems,
   pageState,
   rangeError,
+  normalize,
 } from "../src/catalog.ts";
-import type { DemoPackage } from "../src/demo-model.ts";
+import { categoryKey } from "../src/item-data.ts";
+import { readFixture } from "./fixture-package.ts";
 
-const data: DemoPackage = JSON.parse(
-  fs.readFileSync(
-    new URL("../public/demo/items.json", import.meta.url),
-    "utf8",
-  ),
-);
-const find = (query: string) =>
-  filterItems(data.items, new URLSearchParams(query));
-const ids = (query: string) => find(query).map((item) => item.id);
+const {
+  document: { items },
+} = readFixture();
 
-test("fixtures remain explicitly fictional and references point to separate versions", () => {
-  assert.equal(data.kind, "visual-demo");
+test("unconnected input never supplies records for any query or restored URL", () => {
+  for (const query of [
+    "",
+    "q=1",
+    "initial=0",
+    "cats=equipment",
+    "lvmin=0",
+    "state=ready&item=1",
+  ]) {
+    assert.deepEqual(filterItems([], new URLSearchParams(query)), []);
+  }
+  assert.ok(categoryTree([]).every((node) => node.children.length === 0));
+});
+
+test("retired fixture assets and generator are absent", () => {
+  for (const file of [
+    "items.json",
+    "consumable.svg",
+    "equipment.svg",
+    "material.svg",
+    "pet.svg",
+    "quest.svg",
+  ]) {
+    assert.equal(
+      fs.existsSync(new URL(`../public/demo/${file}`, import.meta.url)),
+      false,
+    );
+  }
   assert.equal(
-    new Set(data.items.map((item) => item.id)).size,
-    data.items.length,
+    fs.existsSync(new URL("../scripts/create-demo.mjs", import.meta.url)),
+    false,
   );
-  for (const item of data.items)
-    for (const id of item.versions || [])
-      assert.ok(data.items.some((candidate) => candidate.id === id));
 });
-test("normal and awakened initial forms remain separate; initial form must match filters itself", () => {
-  assert.deepEqual(ids("q=练习剑"), ["91000001", "91000003"]);
-  assert.deepEqual(ids("q=练习剑&lvmin=120"), []);
-  assert.deepEqual(ids("q=练习剑&lvmin=120&initial=0"), ["91000002"]);
-  assert.deepEqual(ids("q=91000002"), ["91000002"]);
-  assert.deepEqual(ids("q=星光练习剑+%2B1"), ["91000002", "91000004"]);
-});
-test("numeric IDs match exactly, NFKC normalization works and duplicates retain identity", () => {
-  assert.deepEqual(ids("q=910000"), []);
-  assert.deepEqual(ids("q= ９１０００００２ "), ["91000002"]);
-  assert.deepEqual(ids("q=清晨恢复药水"), ["91000006", "91000017"]);
-});
-test("optional search scopes form a union then intersect selected categories", () => {
-  assert.equal(find("q=晨曦守护").length, 0);
-  assert.deepEqual(ids("q=晨曦守护&buff=1"), ["91000006"]);
-  assert.deepEqual(ids("q=晨曦守护&buff=1&cats=equipment"), []);
-  assert.deepEqual(ids("q=月下旅人&setname=1"), ["91000009"]);
-  assert.equal(find("q=未收录阵容&desc=1").length, 1);
-});
-test("unknown categories excluded only with a category selection; descendants use stable keys", () => {
-  assert.deepEqual(ids("q=91000016"), ["91000016"]);
-  assert.deepEqual(
-    ids("q=91000016&cats=equipment,consumable,material,quest,pet"),
-    [],
-  );
-  assert.ok(ids("cats=craft-material").includes("91000018"));
-  assert.equal(categoryTree(data.items).length, 5);
-});
-test("unknown permissions are neither allowed nor denied; zero and level systems remain distinct", () => {
-  assert.deepEqual(ids("q=91000013&trade=0"), []);
-  assert.deepEqual(ids("q=91000013&trade=1"), []);
-  assert.deepEqual(ids("q=91000014&lvmax=0"), ["91000014"]);
-  assert.deepEqual(ids("q=91000014&liimax=0"), []);
-  assert.deepEqual(ids("liimin=0.01&liimax=0.01"), ["91000010", "91000014"]);
-  assert.deepEqual(ids("q=91000016&lvmin=0"), []);
-});
-test("invalid ranges are rejected without rewriting input", () => {
+
+test("invalid filter input is rejected without rewriting the user's text", () => {
   for (const query of [
     "lvmin=1.2",
     "limin=-1",
@@ -76,12 +60,17 @@ test("invalid ranges are rejected without rewriting input", () => {
     const params = new URLSearchParams(query);
     assert.ok(rangeError(params));
     assert.equal(params.toString(), query);
-    assert.equal(filterItems(data.items, params).length, 0);
   }
 });
-test("pagination clamps unsafe URLs and supports keeping the original first record on resize", () => {
+
+test("pagination normalizes invalid page input and handles no records", () => {
+  assert.deepEqual(pageState(new URLSearchParams("page=99&size=10"), 0), {
+    size: 10,
+    page: 1,
+    pages: 1,
+    start: 0,
+  });
   assert.equal(pageState(new URLSearchParams("page=2.5&size=11"), 17).page, 1);
-  assert.equal(pageState(new URLSearchParams("page=99"), 17).page, 2);
   const original = pageState(new URLSearchParams("page=2&size=10"), 17);
   const resized = pageState(
     new URLSearchParams(`page=${Math.floor(original.start / 20) + 1}&size=20`),
@@ -91,4 +80,119 @@ test("pagination clamps unsafe URLs and supports keeping the original first reco
     original.start >= resized.start &&
       original.start < resized.start + resized.size,
   );
+});
+
+test("real records retain exact IDs and same-name identities in stable numeric order", () => {
+  const anchor = items.find((item) => item.id === "84905009");
+  assert.ok(anchor);
+  assert.deepEqual(filterItems(items, new URLSearchParams({ q: anchor.id })), [
+    anchor,
+  ]);
+  assert.deepEqual(
+    filterItems(items, new URLSearchParams({ q: "849050" })),
+    [],
+  );
+  assert.equal(normalize(" AＢＣ "), "abc");
+  const groups = new Map<string, typeof items>();
+  for (const item of items) {
+    const key = normalize(item.name);
+    const group = groups.get(key) ?? [];
+    group.push(item);
+    groups.set(key, group);
+  }
+  const sameName = [...groups.values()].find((group) => group.length > 1);
+  assert.ok(
+    sameName,
+    "Producer fixture must cover duplicate names with distinct IDs",
+  );
+  const result = filterItems(
+    items,
+    new URLSearchParams({ q: ` ${sameName[0].name} ` }),
+  );
+  assert.deepEqual(
+    result.slice(0, sameName.length).map((item) => item.id),
+    sameName.map((item) => item.id),
+  );
+  assert.equal(new Set(result.map((item) => item.id)).size, result.length);
+});
+
+test("description search includes only the original producer text when explicitly enabled", () => {
+  const candidate = items.find(
+    (item) =>
+      item.description.status === "success" &&
+      !normalize(item.name).includes(normalize(item.description.value)),
+  );
+  assert.ok(candidate);
+  const query = new URLSearchParams({ q: candidate.description.value });
+  assert.ok(!filterItems(items, query).includes(candidate));
+  query.set("desc", "1");
+  assert.ok(filterItems(items, query).includes(candidate));
+});
+
+test("unsupported legacy conditions never filter verified basic records", () => {
+  for (const query of [
+    "initial=1&lvmin=invalid&lvmax=0&liimin=-1&job=unsupported&trade=0&storage=1&destroy=0&auction=1",
+    "initial=0&buff=1&setname=1&state=empty&source=unsupported&open-routes=obsolete",
+  ])
+    assert.deepEqual(filterItems(items, new URLSearchParams(query)), items);
+});
+
+test("any category selection excludes incomplete paths, clearing selection restores the same record", () => {
+  const missing = items.find((item) => item.category.status !== "success");
+  assert.ok(missing);
+  const query = new URLSearchParams({ q: missing.id });
+  assert.deepEqual(filterItems(items, query), [missing]);
+  query.set("cats", "equipment,consumables,other,quests,pets");
+  assert.deepEqual(filterItems(items, query), []);
+  query.delete("cats");
+  assert.deepEqual(filterItems(items, query), [missing]);
+  assert.equal(
+    filterItems(
+      items,
+      new URLSearchParams("cats=equipment,consumables,other,quests,pets"),
+    ).length,
+    items.filter((item) => item.category.status === "success").length,
+  );
+});
+
+test("classification uses complete prefixes and does not merge repeated child keys under different parents", () => {
+  const prefixesByKey = new Map<string, Set<string>>();
+  for (const item of items.filter(
+    (item) => item.category.status === "success",
+  )) {
+    const prefix: string[] = [];
+    for (const part of item.category.segments) {
+      prefix.push(part.key);
+      const paths = prefixesByKey.get(part.key) ?? new Set<string>();
+      paths.add(categoryKey(prefix));
+      prefixesByKey.set(part.key, paths);
+    }
+  }
+  const collision = [...prefixesByKey.values()].find((paths) => paths.size > 1);
+  assert.ok(
+    collision,
+    "Producer fixture must cover repeated child keys under different parents",
+  );
+  const tree = categoryTree(items);
+  const flatten = (nodes: typeof tree): string[] =>
+    nodes.flatMap((node) => [node.key, ...flatten(node.children)]);
+  const identities = flatten(tree);
+  assert.equal(identities.length, new Set(identities).size);
+  for (const key of collision) {
+    assert.ok(identities.includes(key));
+    const matches = filterItems(items, new URLSearchParams({ cats: key }));
+    assert.ok(matches.length > 0);
+    assert.ok(
+      matches.every((item) =>
+        item.category.segments.some(
+          (_, index) =>
+            categoryKey(
+              item.category.segments
+                .slice(0, index + 1)
+                .map((part) => part.key),
+            ) === key,
+        ),
+      ),
+    );
+  }
 });

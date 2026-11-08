@@ -1,22 +1,22 @@
-import { useEffect, useRef, useState } from "react";
+import { useDeferredValue, useEffect, useMemo, useRef, useState } from "react";
 import {
   BookOpen,
   ChevronRight,
-  FlaskConical,
   Monitor,
   Moon,
   Rainbow,
-  Search,
   Settings2,
   Sun,
   X,
 } from "lucide-react";
-import { filterItems, pageState, rangeError } from "./catalog";
-import { Empty, ItemIcon, ItemName, Loading, Pager, Retry } from "./components";
-import type { DemoPackage } from "./demo-model";
+import { Empty, Loading, Pager, Retry } from "./components";
 import { Filters } from "./Filters";
-import { ItemDetails } from "./ItemDetails";
+import { BasicItemDetails } from "./BasicItemDetails";
+import { categoryLabel } from "./item-data";
+import type { Item } from "./item-data";
+import { filterItems, pageState } from "./catalog";
 import { useNavigation } from "./navigation";
+import { useItems } from "./use-items";
 
 type Theme = "system" | "light" | "dark";
 type Density = "standard" | "compact";
@@ -154,104 +154,73 @@ function Settings() {
   );
 }
 
+const NO_ITEMS: Item[] = [];
 export function App() {
   const { params, update, back } = useNavigation();
-  const [data, setData] = useState<DemoPackage | null>(null);
-  const [error, setError] = useState("");
-  const [attempt, setAttempt] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const content = useRef<HTMLElement>(null);
+  const data = useItems();
+  const items = data.release?.items ?? NO_ITEMS;
+  const requestedId = params.get("item");
+  const byId = useMemo(
+    () => new Map(items.map((item) => [item.id, item])),
+    [items],
+  );
+  const selected = requestedId ? byId.get(requestedId) : undefined;
+  const search = useDeferredValue(params.toString());
+  const filtered = useMemo(
+    () => filterItems(items, new URLSearchParams(search)),
+    [items, search],
+  );
+  const page = pageState(params, filtered.length);
+  const coverage = data.release?.manifest.coverage;
+  const coverageText = coverage
+    ? coverage.kind === "producer-test-subset"
+      ? `真实测试子集：${coverage.count.toLocaleString("zh-CN")} / ${coverage.fullPublicCount.toLocaleString("zh-CN")} 条公开道具，仅搜索此测试范围。`
+      : `已接入 ${coverage.count.toLocaleString("zh-CN")} 条基础道具。`
+    : "资料未接入";
+  const statusText =
+    data.status === "unconnected"
+      ? "资料未接入"
+      : data.status === "loading"
+        ? data.release
+          ? "正在检查资料更新…"
+          : "正在读取资料…"
+        : data.status === "error"
+          ? data.release
+            ? "更新失败，继续显示已验证资料。"
+            : "资料加载失败"
+          : coverageText;
   useEffect(() => {
-    const abort = new AbortController();
-    setLoading(true);
-    setError("");
-    fetch("/demo/items.json", { signal: abort.signal })
-      .then(async (response) => {
-        if (!response.ok) throw new Error("演示资料读取失败。");
-        const result: unknown = await response.json();
-        if (
-          !result ||
-          typeof result !== "object" ||
-          !("kind" in result) ||
-          result.kind !== "visual-demo" ||
-          !("items" in result) ||
-          !Array.isArray(result.items)
-        )
-          throw new Error("演示资料格式不正确。");
-        if (!abort.signal.aborted) setData(result as DemoPackage);
-      })
-      .catch((reason: unknown) => {
-        if (!abort.signal.aborted)
-          setError(
-            reason instanceof Error ? reason.message : "演示资料读取失败。",
-          );
-      })
-      .finally(() => {
-        if (!abort.signal.aborted) setLoading(false);
-      });
-    return () => abort.abort();
-  }, [attempt]);
-  const mode = params.get("state") || "ready";
-  const items = data?.items || [];
-  const invalid = rangeError(params);
-  const results = mode === "empty" ? [] : filterItems(items, params);
-  const pagination = pageState(params, results.length);
-  const selectedId = params.get("item");
-  const selected = selectedId
-    ? items.find((item) => item.id === selectedId)
-    : results[pagination.start];
-  const failure = !!error || mode === "error";
-  const busy = loading || mode === "loading";
-  const open = (id: string) => {
-    update(
-      { item: id, tab: null, "sources-group": null, "uses-group": null },
-      true,
+    if (selected)
+      document.getElementById("detail-title")?.focus({ preventScroll: true });
+  }, [selected?.id]);
+  const selectItem = (id: string) => {
+    update({ item: id, tab: null, "open-routes": null }, true);
+    if (innerWidth < 1280) window.scrollTo(0, 0);
+  };
+  const unavailable =
+    data.status === "loading" ? (
+      <Loading />
+    ) : data.status === "error" ? (
+      <Empty title="资料加载失败" error action={<Retry onClick={data.retry} />}>
+        {data.error}
+      </Empty>
+    ) : (
+      <Empty title="资料未接入" />
     );
-    requestAnimationFrame(() => {
-      const title = document.getElementById("detail-title");
-      if (content.current && content.current.clientWidth < 1024)
-        window.scrollTo(0, 0);
-      title?.focus({ preventScroll: true });
-    });
-  };
-  const retry = () => {
-    update({ state: null });
-    setAttempt((value) => value + 1);
-  };
-  const targetIssue =
-    mode === "missing" || mode === "uncached" || mode === "removed";
-  const hasDetail = !!selectedId || targetIssue;
   return (
     <>
       <a className="skip-link" href="#main-content">
         跳到道具内容
       </a>
       <div className="preview-toolbar">
+        <span>页面预览</span>
         <span>
-          <FlaskConical />
-          样式预览 <strong>演示资料</strong>
+          {coverage?.kind === "producer-test-subset"
+            ? "真实测试子集"
+            : data.release
+              ? "真实基础资料"
+              : "资料未接入"}
         </span>
-        <label>
-          预览状态
-          <select
-            aria-label="预览状态"
-            value={mode}
-            onChange={(event) =>
-              update({
-                state:
-                  event.target.value === "ready" ? null : event.target.value,
-              })
-            }
-          >
-            <option value="ready">正常</option>
-            <option value="loading">加载中</option>
-            <option value="error">读取失败</option>
-            <option value="empty">空结果</option>
-            <option value="missing">目标缺失</option>
-            <option value="uncached">尚未缓存</option>
-            <option value="removed">版本中移除</option>
-          </select>
-        </label>
       </div>
       <div className="app-frame">
         <header className="site-header">
@@ -270,167 +239,123 @@ export function App() {
               <span>道具图鉴</span>
             </a>
             <div className="side-foot">
-              客户端资料<span>当前为样式演示</span>
+              客户端资料
+              <span>{data.release ? "基础资料已接入" : "资料未接入"}</span>
             </div>
           </aside>
           <main
             id="main-content"
-            className={`site-content ${hasDetail ? "has-detail" : ""}`}
-            ref={content}
+            data-data-version={data.release?.manifest.dataVersion}
+            className={`site-content${data.release && requestedId ? " has-detail" : ""}`}
           >
-            <p className="demo-notice">
-              <FlaskConical />
-              <span>
-                {data?.notice ||
-                  "演示资料：名称、数值、图标与关系均为样式样例，不代表游戏资料或全库查询。"}
-              </span>
-            </p>
-            <Filters items={items} params={params} update={update} />
+            <div className="data-notice">
+              <div className="data-feedback">
+                <p id="data-status" role="status">
+                  {statusText}
+                </p>
+                {data.release && data.status !== "ready" && (
+                  <p className="data-coverage">{coverageText}</p>
+                )}
+                {data.release && data.error && <p role="alert">{data.error}</p>}
+              </div>
+              {data.status !== "unconnected" && (
+                <button
+                  className="button"
+                  disabled={data.status === "loading"}
+                  onClick={data.retry}
+                >
+                  {data.status === "error" ? "重试" : "检查资料更新"}
+                </button>
+              )}
+            </div>
+            <fieldset disabled={!data.release} aria-describedby="data-status">
+              <Filters
+                items={items}
+                params={data.release ? params : new URLSearchParams()}
+                update={data.release ? update : () => {}}
+              />
+            </fieldset>
             <div className="workspace">
               <section className="results-panel" aria-label="道具搜索结果">
                 <div className="results-heading">
                   <h2>
                     资料结果{" "}
-                    <span>{busy ? "…" : failure ? "-" : results.length}</span>
+                    <span>
+                      {data.release
+                        ? filtered.length.toLocaleString("zh-CN")
+                        : "-"}
+                    </span>
                   </h2>
-                  <small>仅演示资料</small>
                 </div>
-                {busy ? (
-                  <Loading />
-                ) : failure ? (
-                  <Empty
-                    title="读取失败"
-                    error
-                    action={<Retry onClick={retry} />}
-                  >
-                    {error || "模拟读取失败；当前条件已保留。"}
-                  </Empty>
-                ) : invalid ? (
-                  <Empty title="请修正等级条件" error>
-                    {invalid}
-                  </Empty>
-                ) : results.length ? (
+                {!data.release ? (
+                  unavailable
+                ) : (
                   <>
-                    <div className="item-results">
-                      {results
-                        .slice(
-                          pagination.start,
-                          pagination.start + pagination.size,
-                        )
+                    <div
+                      className="item-results"
+                      aria-busy={search !== params.toString()}
+                    >
+                      {filtered
+                        .slice(page.start, page.start + page.size)
                         .map((item) => (
                           <button
-                            className={`item-result ${selected?.id === item.id ? "selected" : ""}`}
                             key={item.id}
-                            id={`item-${item.id}`}
-                            onClick={() => open(item.id)}
-                            aria-label={`查看 ${item.name}，编号 ${item.id}`}
+                            id={`item-link-${item.id}`}
+                            data-item-id={item.id}
+                            className={`item-result${selected?.id === item.id ? " selected" : ""}`}
                             aria-current={
                               selected?.id === item.id ? "true" : undefined
                             }
+                            onClick={() => selectItem(item.id)}
                           >
-                            <ItemIcon item={item} />
                             <span className="result-copy">
-                              <ItemName item={item} />
+                              <span className="game-name">{item.name}</span>
                               <small>
-                                {item.path
-                                  .map((node) => node.label)
-                                  .join(" / ") || "分类尚未辨识"}
-                              </small>
-                              <small>
-                                #{item.id}
-                                {item.form && ` · ${item.form} · ${item.stage}`}
+                                #{item.id} · {categoryLabel(item)}
                               </small>
                             </span>
                             <ChevronRight className="result-arrow" />
                           </button>
                         ))}
+                      {!filtered.length && (
+                        <Empty title="没有匹配的道具">
+                          调整名称、编号或分类条件后重试。
+                        </Empty>
+                      )}
                     </div>
                     <Pager
+                      total={filtered.length}
                       params={params}
                       update={update}
-                      total={results.length}
                     />
                   </>
-                ) : (
-                  <Empty
-                    title="没有符合条件的演示道具"
-                    action={
-                      <button
-                        className="button"
-                        onClick={() => {
-                          update({
-                            q: null,
-                            cats: null,
-                            state: null,
-                            page: null,
-                          });
-                          document.getElementById("item-search")?.focus();
-                        }}
-                      >
-                        <Search />
-                        清空搜索与分类
-                      </button>
-                    }
-                  >
-                    试试“星光”或完整编号 91000001。
-                  </Empty>
                 )}
               </section>
               <aside className="detail-panel" aria-label="道具详情">
-                {busy ? (
-                  <Loading />
-                ) : failure ? (
-                  <Empty
-                    title="资料暂不可用"
-                    error
-                    action={<Retry onClick={retry} />}
-                  >
-                    重试后保留原搜索与详情选择。
-                  </Empty>
-                ) : targetIssue || (selectedId && !selected) ? (
-                  <div className="detail-inner">
-                    <button
-                      className="button"
-                      onClick={() => {
-                        update({ state: null });
-                        back();
-                      }}
-                    >
-                      返回列表
-                    </button>
-                    <Empty
-                      title={
-                        mode === "uncached"
-                          ? "此资料尚未缓存"
-                          : mode === "removed"
-                            ? "此资料已从当前版本移除"
-                            : "目标资料缺失"
-                      }
-                    >
-                      {mode === "uncached"
-                        ? "联网后才能读取。此处仅演示提示样式，尚未实现离线缓存。"
-                        : "保留原编号，不跳转到同名道具。"}
-                    </Empty>
-                  </div>
-                ) : selected ? (
-                  <ItemDetails
-                    item={selected}
-                    items={items}
-                    params={params}
-                    update={update}
-                    onOpen={open}
-                    back={back}
-                  />
+                {selected ? (
+                  <BasicItemDetails item={selected} back={back} />
                 ) : (
-                  <Empty title="选择一个道具查看详情">
-                    先调整左侧搜索条件。
-                  </Empty>
+                  <div className="detail-inner">
+                    {!data.release ? (
+                      <Empty title="资料未接入" />
+                    ) : requestedId ? (
+                      <Empty
+                        title="此资料版本未收录该编号"
+                        action={
+                          <button className="button" onClick={back}>
+                            返回列表
+                          </button>
+                        }
+                      >
+                        编号 #{requestedId}
+                      </Empty>
+                    ) : (
+                      <Empty title="选择道具查看原说明" />
+                    )}
+                  </div>
                 )}
               </aside>
             </div>
-            <footer className="data-footer">
-              19 条样式样例 · 正式资料、离线缓存与其他板块尚未接入
-            </footer>
           </main>
         </div>
       </div>

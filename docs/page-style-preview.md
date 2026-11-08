@@ -1,60 +1,54 @@
-# 道具页面样式预览
+# 基础道具真实资料预览
 
-更新日期：2026-11-09。范围为 [页面样式任务 02](../.scratch/static-items/issues/02-page-style.md)与[途径折叠任务 03](../.scratch/static-items/issues/03-collapsed-routes.md)，不是 [真实静态资料任务 01](../.scratch/static-items/issues/01-static-item-detail.md)的完成证明。生产契约未冻结；只提供演示展示模型。
+更新日期：2026-11-09。当前验收对应 [真实资料任务 04](../.scratch/static-items/issues/04-data-only-preview.md)与[首条详情任务 01](../.scratch/static-items/issues/01-static-item-detail.md)。此前虚构预览已撤除，旧截图与演示状态不再作为当前页面证据。
 
-## 运行与入口
+## 来源与范围
 
-在本仓库根目录执行 `npm ci`、`npm run dev`，打开 [http://127.0.0.1:4173/](http://127.0.0.1:4173/)。交付时此地址已启动；日志在忽略的 `.runtime/preview.log`，进程编号在 `.runtime/preview.pid`。重启电脑后需重新执行启动命令。端口冲突会明确失败，不自动换端口或停止已有服务。
+全部游戏名称、说明、分类路径及状态只取自资料仓库固定出口。固定栏目、按钮和未接入提示属于 UI 文字。资料根由 `VITE_ITEMS_DATA_ROOT` 配置；未配置不请求资料，配置后请求失败属于错误，可重试。
 
-| 场景 | 预览入口 |
+契约固定为 `items-v1`，来源提交 `a2164a577833960489e06803aff462e341baa6dd`，内容 SHA-256 `18d1d91c8b452d6d310d57a2f64c575a0a5498f217aa0c3324c3fe501e392cfd`。CI 比对冻结提交中的文件字节及完整内容清单，生产者与消费者使用同一个 `assertDocument`。
+
+## 已实现行为
+
+1. 按 current → 不可变 manifest → items 读取静态文件；校验格式、路径、契约身份、大小、哈希、版本身份与覆盖数量／选择后整体展示。
+2. 对整份已声明范围执行名称、精确 ID、可选原说明与分类过滤，再分页。测试子集明示范围，非 success 分类在任意分类筛选中排除。
+3. 分类身份由完整键前缀构成；原说明直接作为文本展示，保留换行，不增加解释。缺失与未接入均不替换成零、否或没有来源。
+4. 新包校验失败保留当前会话已验证版本；首次失败可重试。旧 `state` 参数不控制页面状态，未证筛选条件不参与结果计算。
+5. 保留浅／深／系统外观、标准／紧凑密度、桌面分栏与手机返回。高级详情和途径折叠代码保留但不连接虚构资料。
+
+## 验收记录
+
+三份产物均由生产程序提交 `b426660df06944264947a6189a54bb0b42d1ef1d` 生成，输入 SHA-256 为 `66d536e41b46354745001d15edb83c0b2826daf7405eb61ec85b2a1403d67993`，范围统一为 `historical-sqlite-back-half-only`。完整名称、原说明及分类状态不经过人工补写。
+
+| 产物 | 资料版本 | items 字节／SHA-256 |
+| --- | --- | --- |
+| 12 条真实子集，全量分母 85,158 | `a607da4dd24c06d01e68fe597ba525e1f8242d27db53ce58e0db286ddb62e4d0` | 4,770／`8308debc240e70bf0ec6885b73735bf4ab06f820e0babf472a8f3f9b492cb145` |
+| 16 条真实子集，全量分母 85,158 | `067a2990e676f2ae224a009312883abcc96c523fc772755554086b14cfcdd7bf` | 6,346／`fc971767afde007f7153091cc684999aebd4717ac7701840ad8e27b75a018ede` |
+| 85,158 条完整公开包 | `bdf835f885274c4157c34f3976e54317aaeb53623f83cf91737abddd5d9dff3d` | 36,302,154／`6e079d5880c906ec72b9e434bbbb0e1b3a898b3a7da1bdef632ecd6cdb8bc752` |
+
+两份夹具包含指定编号、同名不同 ID、不同父路径下同子键、缺说明和缺分类；所有文件都从 data 出口原字节导入。协调会话另对完整包与已核验 `items.jsonl` 逐条严格比对：85,158 条的 id、name、description.status/value、category 各字段相等，未增加游戏文字；说明缺失 4,230 条，分类缺失 3,190 条。这项独立来源核对与前端结构／浏览器检查分别计数。
+
+实际运行命令：
+
+```powershell
+node scripts/import-items-fixture.mjs "<data-export>/test-subset" items-v1
+node scripts/import-items-fixture.mjs "<data-export>/test-subset-b" items-v1-b
+npm run ci
+npm run test:browser
+node scripts/verify-full-items.mjs "<data-export>/full" http://127.0.0.1:4174/
+```
+
+33 项规则／查询／加载用例覆盖完整前缀分类、缺失排除、禁用条件的旧 URL、字节和哈希损坏、契约锁、版本身份、覆盖范围、取消，以及同一消费者读取两份真实包。9 项 Chromium 检查覆盖原文字段、精确编号、未接入、错误重试、更新失败保留旧版、同一 JS 构建从 12 条切换到 16 条、输入法、窄屏返回与外观持久化。旧演示 JSON／SVG 在开发和预览服务返回 410 且 no-store。
+
+2026-11-09 02:44（Asia/Taipei），本机 Windows／Chromium 生产构建实测全量：85,158 条计数、编号 `84905009`、原说明严格相等、精确编号不扩展为前缀、缺分类清除／恢复、缺说明、1440px／320px 与返回通过；业务 API 请求为 0，页面异常为 0。新浏览器上下文首次进入至已验证资料展示为 **805ms**；编号输入至单条结果为 **315ms**，包含 220ms 输入等待。此为本机单次观察，不是网络速度或设备性能保证。[原始测量 JSON](evidence/items-v1-browser.json)保留资料身份及资源字节数。
+
+| 全量页面 | 截图 |
 | --- | --- |
-| 普通／觉醒与强化版本 | [普通初始](http://127.0.0.1:4173/?item=91000001)、[觉醒初始与三阶段候选](http://127.0.0.1:4173/?item=91000003) |
-| 五类固定标签 | [装备套装](http://127.0.0.1:4173/?item=91000009&tab=set)、[消耗 Buff](http://127.0.0.1:4173/?item=91000006)、[其他材料](http://127.0.0.1:4173/?item=91000005&tab=uses)、[任务长名称](http://127.0.0.1:4173/?item=91000007)、[宠物阵容](http://127.0.0.1:4173/?item=91000008&tab=formations) |
-| 多层路径／不同单位 | [六层分类](http://127.0.0.1:4173/?item=91000018)、[词条零值／负值／未知单位](http://127.0.0.1:4173/?item=91000010) |
-| 主要状态 | [加载](http://127.0.0.1:4173/?state=loading)、[读取失败](http://127.0.0.1:4173/?state=error)、[空结果](http://127.0.0.1:4173/?state=empty)、[目标缺失](http://127.0.0.1:4173/?state=missing)；其他状态在页头选择 |
+| 1440px 列表与真实原说明 | [列表](screenshots/real-items/full-1440-list.png)／[详情](screenshots/real-items/full-1440-detail.png) |
+| 320px 无横向溢出，完整原文 | [列表](screenshots/real-items/full-320-list.png)／[详情](screenshots/real-items/full-320-detail.png) |
 
-## 采用的已确认基础
+## 复现与未覆盖
 
-只读核对旧工作区 `latale-wiki-frontend/design/shadcn-component-preview/` 的 `item-detail-design.md`（2026-10-22 整体通过）、`src/ItemCatalog.tsx`、`src/ItemDetails.tsx`、`src/preview.css`、`src/item-catalog.css` 与 `src/item-details.css`。2026-11-08 的本仓库 [规格](../.scratch/static-items/spec.md)优先于旧预览中的合并逻辑或额外词条主标签。
+从单独检出到本地静态挂载的命令见 [README](../README.md)。开发端口为 4173，生产构建预览为 4174，自动浏览器验收为 4175。端口占用时退出，不停止别的服务。
 
-保留 React / TypeScript / Vite、V4.1 色值、1600px 最大宽度、自然滚动、蓝色下划线标签、内容宽度 1024px 分栏断点、浅深外观、标准／紧凑密度，以及四项特性中允许为粉色、未知与禁止为灰色的表达。表单使用原生 HTML 控件、对话框与可键盘切换的标签；未复制旧服务端请求或其他板块组件。
-
-`src/demo-model.ts` 是演示展示模型；`public/demo/items.json` 在运行时请求，不编入 JS。19 条虚构样例的默认初始形态结果为 17 条，名称、编号、数值、关系、图标均明确为演示。`scripts/create-demo.mjs` 是可复现的手工样例编排器，不读取客户端资料、不承担资料解析。SVG 为本任务绘制的品类占位图；没有将其冒充游戏图标。
-
-## 验收证据
-
-`npm run ci`：25 个规则／查询／途径分组测试、类型检查与生产构建通过。`npm run test:browser`：10 组 Chromium 浏览器检查覆盖以下范围及途径折叠。浏览器测试访问静态 `dist/`，拦截业务 API 路径并确认没有业务请求；另主动阻断静态 JSON 请求检查真实失败与重试。
-
-| 范围 | 实际核对与截图 |
-| --- | --- |
-| 桌面 1440px | 分栏、初始形态、版本切换、设置持久化、键盘焦点；[浅色](screenshots/page-style/desktop-light.png)、[深色紧凑](screenshots/page-style/desktop-dark-compact.png) |
-| 320px | 无横向溢出、长名称／完整分类换行、完整觉醒候选、词条表、嵌套关系逐层返回、关系分页恢复、列表滚动及焦点恢复；[列表](screenshots/page-style/320-list.png)、[觉醒详情](screenshots/page-style/320-awakening.png)、[深层分类](screenshots/page-style/320-deep-filters.png)、[深色词条](screenshots/page-style/320-gem-dark.png) |
-| 390px | 五类固定标签逐项打开、深层分类树、44px 点击高度；[筛选区](screenshots/page-style/390-filters.png)、[宠物阵容](screenshots/page-style/390-91000008.png) |
-| 状态与输入 | 加载／失败／空结果／目标缺失／未缓存／版本移除；输入法合成后查询、220ms 停顿、非法等级保留输入、精确编号／同名记录、图片失败保留文字；[加载](screenshots/page-style/loading.png)、[失败](screenshots/page-style/error.png)、[空结果](screenshots/page-style/empty.png) |
-| 设置与可访问性 | 浅／深／系统跟随、密度持久化、Escape 关闭与焦点回到按钮、标签方向键；[320px 手机设置](screenshots/page-style/320-settings-dark.png) |
-
-完整即时截图及失败时 trace 保存到 `test-results/`，GitHub CI 上传为 `page-style-browser-evidence`。上表的代表截图随仓库提交，单独检出即可阅读。
-
-## 途径默认折叠与多方案（2026-11-09）
-
-[材料用途入口](http://127.0.0.1:4173/?item=91000005&tab=uses)包含 7 份演示方案，按明确途径身份分为 6 组，默认每页 5 组。首次进入各组收起；只在展开后显示材料、产物、数量、费用、地点与条件。同一 NPC 的两份方案在原始数组中不相邻，也只形成一条 `[兑换]阿洛` 外层入口，另一位 NPC 使用不同的演示姓名“米娜”。同名不同身份和缺身份的反例仅放入规则测试及浏览器拦截响应，不干扰正常预览；这些记录仍必须独立，不按名字合并。
-
-| 场景 | 验收与截图 |
-| --- | --- |
-| 五种外层描述 | 兑换、购买、生活技能、分解、升级均有独立描述；生活技能完整使用用户例子 `[吉恩蒂亚成品][Lv1]成品制造 > 拳套`。桌面[折叠](screenshots/collapsed-routes/routes-desktop-collapsed.png)与[展开](screenshots/collapsed-routes/routes-desktop-alternatives.png) |
-| 320px 与深色 | 完整描述换行，点击目标至少 44px，无横向溢出；[折叠](screenshots/collapsed-routes/routes-320-collapsed.png)、[独立材料方案](screenshots/collapsed-routes/routes-320-alternatives.png)、[深色](screenshots/collapsed-routes/routes-320-dark.png) |
-| 获取方向 | [获取方式入口](http://127.0.0.1:4173/?item=91000005&tab=sources)将同 NPC 的两份兑换方案放入一个入口，各自产出当前道具；[获取多方案](screenshots/collapsed-routes/routes-acquisition-alternatives.png) |
-| 状态恢复 | Space／Enter 展开与收起；独立组互不关闭。材料跳转、页内返回与浏览器后退恢复原展开、关系页码、滚动和精确链接焦点；刷新也从 URL 恢复展开与关系页码 |
-
-`src/routes.ts` 仅把明示展示身份组织为途径组，不解析客户端字段，不合并方案内容。稳定键包含当前道具、关系方向、途径类型与 NPC／生活技能类别＋等级＋完整路径／分解或升级主输入身份；名字不参与判断相等。`open-routes` 保存这些键，分组之后再传入已有分页器；相同 NPC 的获取和用途展开状态互不影响。缺身份时使用单份方案身份保留独立记录，不按标题猜关系。直接从详情链接进入再追查材料时，返回按钮也正确显示“返回上一页”。
-
-新增 9 个分组规则用例与 4 组浏览器回归（含测试专用同名／缺身份数据）；原有 6 组页面检查继续通过。所有路线字段、NPC 和材料方案均为明确标记的手工演示资料；生活技能例子只证明布局符合用户要求，不证明已经解析出游戏字段。
-
-## 后续对接边界
-
-1. **身份与列表**：需要生产者提供实体类型＋业务编号、完整名称、稳定分类键及父关系、已核验名称色和图标地址。列表不增加等级、属性或来源计数。
-2. **形态与条件**：需要已证普通／觉醒分段、各自初始形态及明确版本成员；职业成员、三种等级与独立三态特性。演示样例的显式关系不能证明全库分段能力。
-3. **详情与关系**：需要原文、数值和单位、缺失语义、候选阶段、完整配方方向、来源数量／费用／条件及精确目标身份。途径还需真实 NPC 身份、生活技能类别／等级／完整路径身份及明确主输入；未知身份不能按名称补齐。生产中的 80% 计算、概率、价格、套装与阵容语义仍由正式契约验收；本预览中的数值是手填展示值。
-4. **尚未接入**：正式 JSON Schema、真实资料与完整索引、跨资料版本切换、其他实体独立页、PWA、离线缓存和 Cloudflare 发布。“尚未缓存”“版本移除”仅为可观察的状态样式。
-
-本次未恢复收藏、独立 NPC、词条或属性筛选、来源类型筛选等取消／暂缓项；未读取游戏档案，未修改相邻仓库，未合入 master、发布 Release 或部署生产。
+当前只接基础编号、名称、原说明和已证分类状态。初始形态、属性、职业／等级、图标、Buff／套装、来源／用途、强化版本、其他板块、PWA、离线缓存与 Cloudflare 均不计入完成。真实包仍仅为历史 SQLite 的后半段验证，未证明客户端原始资源导入链。

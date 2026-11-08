@@ -1,4 +1,4 @@
-// Display fixtures only. These types are not the production data contract.
+// Reserved for the unconnected advanced-detail/route UI. Real basic records use items-v1 directly.
 export type Category =
   | "equipment"
   | "consumable"
@@ -12,7 +12,7 @@ export type Reference = {
   quantity?: string;
   available?: boolean;
 };
-// Explicit display identities for fictional routes, not a frozen production schema.
+// Explicit identities for display grouping; these are not the production schema.
 export type RouteIdentity = { id: string | null; name: string | null };
 export type RelationRoute =
   | { kind: "exchange" | "purchase"; npc: RouteIdentity | null }
@@ -36,7 +36,7 @@ export type Relation = {
   condition?: string;
   location?: string;
 };
-export type DemoItem = {
+export type ItemView = {
   id: string;
   name: string;
   category: Category;
@@ -83,11 +83,6 @@ export type DemoItem = {
   uses?: Relation[];
   quests?: { id: string; name: string; role: string; quantity: string }[];
   formations?: { id: string; name: string; stats: Stat[]; effect: string }[];
-};
-export type DemoPackage = {
-  kind: "visual-demo";
-  notice: string;
-  items: DemoItem[];
 };
 export type CategoryNode = {
   key: string;

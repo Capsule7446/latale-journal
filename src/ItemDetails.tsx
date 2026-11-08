@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
-import type { DemoItem, Reference, Relation } from "./demo-model";
+import type { ItemView, Reference, Relation } from "./display-model";
 import type { Update } from "./navigation";
 import { expandedRoutes, groupRoutes, toggleRoute } from "./routes";
 import {
@@ -15,14 +15,14 @@ import {
 } from "./components";
 
 type Props = {
-  item: DemoItem;
-  items: DemoItem[];
+  item: ItemView;
+  items: ItemView[];
   params: URLSearchParams;
   update: Update;
   onOpen: (id: string) => void;
   back: () => void;
 };
-const descriptions = (item: DemoItem) => (
+const descriptions = (item: ItemView) => (
   <p className="original-text">
     {item.description || <span className="muted">-（说明暂未收录）</span>}
   </p>
@@ -36,7 +36,7 @@ function ItemLink({
   focusKey,
 }: {
   reference: Reference;
-  items: DemoItem[];
+  items: ItemView[];
   onOpen: Props["onOpen"];
   params: URLSearchParams;
   focusKey: string;
@@ -253,7 +253,7 @@ function Attributes({ props }: { props: Props }) {
   const { item, items, update } = props;
   const versions = (item.versions || [])
     .map((id) => items.find((candidate) => candidate.id === id))
-    .filter((candidate): candidate is DemoItem => !!candidate);
+    .filter((candidate): candidate is ItemView => !!candidate);
   return (
     <>
       {versions.length > 0 && (
@@ -388,7 +388,7 @@ function Attributes({ props }: { props: Props }) {
     </>
   );
 }
-function Effects({ item }: { item: DemoItem }) {
+function Effects({ item }: { item: ItemView }) {
   return (
     <>
       {item.title && (

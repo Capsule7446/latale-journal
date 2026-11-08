@@ -12,11 +12,11 @@ import {
   X,
 } from "lucide-react";
 import { pageState } from "./catalog";
-import type { DemoItem, Stat } from "./demo-model";
-import { flagLabels } from "./demo-model";
+import type { ItemView, Stat } from "./display-model";
+import { flagLabels } from "./display-model";
 import type { Update } from "./navigation";
 
-export function ItemIcon({ item }: { item: DemoItem }) {
+export function ItemIcon({ item }: { item: ItemView }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [item.icon]);
   return (
@@ -35,7 +35,7 @@ export function ItemIcon({ item }: { item: DemoItem }) {
     </span>
   );
 }
-export function ItemName({ item }: { item: DemoItem }) {
+export function ItemName({ item }: { item: ItemView }) {
   return (
     <span
       className="game-name"
@@ -49,15 +49,18 @@ export function CheckLabel({
   checked,
   onChange,
   children,
+  disabled = false,
 }: {
   checked: boolean;
   onChange: (value: boolean) => void;
   children: ReactNode;
+  disabled?: boolean;
 }) {
   return (
-    <label className="check-label">
+    <label className="check-label" title={disabled ? "资料未接入" : undefined}>
       <input
         type="checkbox"
+        disabled={disabled}
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
       />
@@ -132,7 +135,7 @@ export function Stats({ rows }: { rows: Stat[] }) {
     <p className="muted">暂未收录数值属性。</p>
   );
 }
-export function Permissions({ item }: { item: DemoItem }) {
+export function Permissions({ item }: { item: ItemView }) {
   return (
     <ul className="permissions" aria-label="道具特性">
       {Object.entries(flagLabels).map(([key, label]) => {
@@ -177,8 +180,8 @@ export function Empty({
 }
 export function Loading() {
   return (
-    <div className="loading-state" role="status" aria-label="正在读取演示资料">
-      <p>正在读取演示资料…</p>
+    <div className="loading-state" role="status" aria-label="正在读取资料">
+      <p>正在读取资料…</p>
       {[1, 2, 3, 4].map((i) => (
         <div className="skeleton-row" key={i}>
           <span />

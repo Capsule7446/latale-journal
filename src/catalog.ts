@@ -1,5 +1,7 @@
-import { categories, flagLabels, levelFields } from "./demo-model.ts";
-import type { CategoryNode, DemoItem } from "./demo-model.ts";
+import { levelFields } from "./display-model.ts";
+import type { CategoryNode } from "./display-model.ts";
+import type { Item } from "./item-data.ts";
+import { categoryKey, dataCategories } from "./item-data.ts";
 
 export const normalize = (text: string) =>
   text.trim().normalize("NFKC").toLocaleLowerCase("en");
@@ -26,83 +28,59 @@ export function rangeError(params: URLSearchParams): string | null {
   return null;
 }
 
-export function filterItems(
-  items: DemoItem[],
-  params: URLSearchParams,
-): DemoItem[] {
-  if (rangeError(params)) return [];
+export function filterItems(items: Item[], params: URLSearchParams): Item[] {
   const query = normalize(params.get("q") || "");
   const numeric = /^\d+$/.test(query);
-  const specificStage = numeric || /(?:\+\d+|[★☆]+)$/.test(query);
   const selected = values(params, "cats");
-  return items
-    .filter((item) => {
-      if (query) {
-        if (numeric) {
-          if (item.id !== query) return false;
-        } else {
-          const texts = [item.name];
-          if (params.get("desc") === "1") texts.push(item.description);
-          if (params.get("buff") === "1")
-            for (const buff of item.buffs || [])
-              texts.push(buff.name || "", buff.description || "");
-          if (params.get("setname") === "1" && item.set)
-            texts.push(item.set.name);
-          if (!texts.some((text) => normalize(text).includes(query)))
-            return false;
-        }
+  const exact: Item[] = [],
+    rest: Item[] = [];
+  for (const item of items) {
+    if (
+      selected.length &&
+      (item.category.status !== "success" ||
+        !item.category.segments.some((_, index) =>
+          selected.includes(
+            categoryKey(
+              item.category.segments
+                .slice(0, index + 1)
+                .map((part) => part.key),
+            ),
+          ),
+        ))
+    )
+      continue;
+    if (query) {
+      if (numeric) {
+        if (item.id !== query) continue;
+      } else {
+        const texts = [item.name];
+        if (params.get("desc") === "1" && item.description.status === "success")
+          texts.push(item.description.value);
+        if (!texts.some((text) => normalize(text).includes(query))) continue;
       }
-      if (
-        params.get("initial") !== "0" &&
-        !specificStage &&
-        item.initial === false
-      )
-        return false;
-      if (
-        selected.length &&
-        !item.path.some((node) => selected.includes(node.key))
-      )
-        return false;
-      const job = params.get("job");
-      if (job && !item.jobs?.includes(job)) return false;
-      for (const [key, field] of levelFields) {
-        const min = params.get(`${key}min`),
-          max = params.get(`${key}max`);
-        const value = item.levels?.[field];
-        if (min && (value === undefined || value < Number(min))) return false;
-        if (max && (value === undefined || value > Number(max))) return false;
-      }
-      for (const key of Object.keys(
-        flagLabels,
-      ) as (keyof typeof flagLabels)[]) {
-        const filter = params.get(key);
-        if (
-          (filter === "1" || filter === "0") &&
-          item.flags[key] !== (filter === "1")
-        )
-          return false;
-      }
-      return true;
-    })
-    .sort(
-      (a, b) =>
-        Number(normalize(b.name) === query) -
-          Number(normalize(a.name) === query) || Number(a.id) - Number(b.id),
-    );
+    }
+    (query && normalize(item.name) === query ? exact : rest).push(item);
+  }
+  // The validated release is already sorted by numeric ID. Keep that order within each rank.
+  return exact.concat(rest);
 }
 
-export function categoryTree(items: DemoItem[]): CategoryNode[] {
-  const roots = Object.entries(categories).map(([key, label]) => ({
+export function categoryTree(items: Item[]): CategoryNode[] {
+  const roots = Object.entries(dataCategories).map(([key, label]) => ({
     key,
     label,
     children: [] as CategoryNode[],
   }));
   for (const item of items) {
+    if (item.category.status !== "success") continue;
     let nodes = roots;
-    for (const part of item.path) {
-      let node = nodes.find((node) => node.key === part.key);
+    const prefix: string[] = [];
+    for (const part of item.category.segments) {
+      prefix.push(part.key);
+      const key = categoryKey(prefix);
+      let node = nodes.find((node) => node.key === key);
       if (!node) {
-        node = { ...part, children: [] };
+        node = { key, label: part.label!, children: [] };
         nodes.push(node);
       }
       nodes = node.children;

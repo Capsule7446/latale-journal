@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "build": "tsc --noEmit && vite build",
     "check": "node scripts/check.mjs",
-    "test": "node --test scripts/policy.test.mjs tests/catalog.test.ts tests/routes.test.ts",
+    "test": "node --test scripts/policy.test.mjs tests/catalog.test.ts tests/routes.test.ts tests/load-items.test.ts",
     "test:browser": "playwright test",
     "ci": "node scripts/ci.mjs",
     "release:package": "node scripts/release.mjs"

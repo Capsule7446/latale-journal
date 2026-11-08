@@ -1,4 +1,4 @@
-import type { Relation } from "./demo-model.ts";
+import type { Relation } from "./display-model.ts";
 
 export type RelationDirection = "sources" | "uses";
 export type RouteGroup = {

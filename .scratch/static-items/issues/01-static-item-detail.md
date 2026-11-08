@@ -2,11 +2,11 @@
 
 Status: ready-for-agent
 
-Work: not-started
+Work: complete
 
 Feature: `feature/static-items/item-detail`
 
-Blocked by: `latale-wiki-data / static-items / 01-item-input-evidence` 的基础字段能力报告。冻结契约后，数据生产阶段与本任务协作；最终浏览器验收须等待生产者按该固定契约生成真实包。
+Blocked by: None。基础字段能力、冻结契约及固定出口已提供，随 [任务 04](04-data-only-preview.md) 在 `feature/static-items/page-style` 完成本任务最小切片。
 
 ## 交付
 
@@ -22,11 +22,11 @@ Blocked by: `latale-wiki-data / static-items / 01-item-input-evidence` 的基础
 
 ## 验收
 
-- [ ] 固定生产者生成多个真实编号的详情及清单，不由 AI 或人工手填正式资料；输入及契约身份可追溯。
-- [ ] 不依赖业务查询 API 时可精确读取 `84905009`；不存在编号返回明确不存在，不能跳同名对象。
-- [ ] 已证分类显示完整路径，未知分类／缺原说明不补造；内容来自所选编号，不继承其他强化版本。
-- [ ] 清单与详情版本一致；必需文件缺失、格式不支持或内容损坏时失败并保留可恢复状态。
-- [ ] 320px 与桌面可读，返回和失败重试有效；README 给出从单独检出到静态预览的实际可执行命令。
+- [x] 固定生产者生成多个真实编号的详情及清单，不由 AI 或人工手填正式资料；输入及契约身份可追溯。
+- [x] 不依赖业务查询 API 时可精确读取 `84905009`；不存在编号返回明确不存在，不能跳同名对象。
+- [x] 已证分类显示完整路径，未知分类／缺原说明不补造；内容来自所选编号，不继承其他强化版本。
+- [x] 清单与详情版本一致；必需文件缺失、格式不支持或内容损坏时失败并保留可恢复状态。
+- [x] 320px 与桌面可读，返回和失败重试有效；README 给出从单独检出到静态预览的实际可执行命令。
 
 ## 不计入完成
 
@@ -35,3 +35,5 @@ Blocked by: `latale-wiki-data / static-items / 01-item-input-evidence` 的基础
 ## Comments
 
 2026-11-08：从已确认规格划出第一条演示路径，尚未实现。`ready-for-agent` 表示规格明确，开始顺序仍受 Blocked by 约束。
+
+2026-11-09：使用固定 `items-v1` 契约与生产提交 `b426660df06944264947a6189a54bb0b42d1ef1d` 真实包，完成上述最小切片。基础字段全量包 85,158 条，浏览器编号 `84905009` 与原说明逐字相等；33 项规则与加载检查、9 项浏览器验收及全量 320px／桌面验收见 [任务 04](04-data-only-preview.md)和[证据](../../../docs/page-style-preview.md)。来源仍为历史 SQLite 后半段，不关闭完整 static-items epic，也不声称原始资源导入或 PWA／云端部署完成。
