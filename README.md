@@ -22,3 +22,7 @@
 架构原因见 [ADR 0001](docs/adr/0001-two-repositories-static-wiki.md)。主分支为 `master`，开发、集成与发布遵循 [分支及 CI 规范](docs/branching.md)。
 
 当前使用 Node.js 24，无需安装 npm 依赖；运行 `npm run ci` 校验工程基线。正式应用命令在首次静态链路完成后补充。Release 当前提供源码、版本清单与校验文件，不是应用构建产物。
+
+## 当前开发入口
+
+`epic/static-items` 已开始迁入 [静态道具需求](.scratch/static-items/spec.md)，实施顺序见 [首条静态链](.scratch/static-items/plan.md)。第一条功能是读取真实静态道具详情；先由资料仓库完成基础字段核验，再冻结契约并实现页面。当前迁入的是需求与任务，尚无可运行的新前端。
