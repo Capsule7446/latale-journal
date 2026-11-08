@@ -1,0 +1,13 @@
+{
+  "name": "latale-journal",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=24" },
+  "releaseKind": "source-baseline",
+  "scripts": {
+    "check": "node scripts/check.mjs",
+    "test": "node --test scripts/policy.test.mjs",
+    "ci": "node scripts/ci.mjs",
+    "release:package": "node scripts/release.mjs"
+  }
+}
