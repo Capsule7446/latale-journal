@@ -24,7 +24,7 @@
 
 ## 当前自动化范围
 
-本仓库尚无正式应用。当前 `npm run ci` 检查分支/PR 规则、文档链接、JSON、源码目录中误入的本地资料，以及分支与发布规则的回归用例。`source-baseline` Release 只包含工程源码 ZIP、提交清单和 SHA-256 校验文件，明确标记 `applicationReady: false`；不能作为可运行应用发布。
+本仓库已有独立运行的道具页面样式演示，尚无正式应用。当前 `npm run ci` 检查分支/PR 规则、文档链接、JSON、误入的本地资料、规则与查询用例、TypeScript 类型，并构建静态演示；GitHub CI 还运行 Chromium 浏览器验收。`source-baseline` Release 仍只包含工程源码 ZIP、提交清单和 SHA-256 校验文件，明确标记 `applicationReady: false`；不能作为正式应用发布。
 
 代码迁入时同时补充真实测试、类型检查、构建和可部署产物校验，再升级打包脚本与产物类型；禁止只保留文档检查就宣称应用构建通过。GitHub Release 属于代码版本发布，Cloudflare 上线及游戏资料包更新仍按各自部署/资料规则执行。
 

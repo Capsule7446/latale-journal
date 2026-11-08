@@ -1,0 +1,1276 @@
+{
+  "kind": "visual-demo",
+  "notice": "演示资料：名称、数值、图标与关系均为样式样例，不代表游戏资料或全库查询。",
+  "items": [
+    {
+      "id": "91000001",
+      "name": "星光练习剑",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "weapon",
+          "label": "武器"
+        },
+        {
+          "key": "onehand",
+          "label": "单手剑"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "一柄用来展示普通与觉醒版本的练习剑。\n这里保留长说明的原始换行；属性和强化阶段均为演示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#e75aa0",
+      "form": "普通",
+      "stage": "初始",
+      "initial": true,
+      "versions": [
+        "91000001",
+        "91000002"
+      ],
+      "jobs": [
+        "盾卫",
+        "守护者"
+      ],
+      "levels": {
+        "normal": 100,
+        "transcend1": 0
+      },
+      "stats": [
+        {
+          "label": "最小攻击力",
+          "value": "120",
+          "unit": "点"
+        },
+        {
+          "label": "物理最小伤害",
+          "value": "13",
+          "unit": "%"
+        },
+        {
+          "label": "移动速度",
+          "value": "-2",
+          "unit": "%"
+        },
+        {
+          "label": "耐久",
+          "value": null
+        }
+      ],
+      "effects": [
+        "星光斩 +2 Lv\n效果条件：装备此道具时。"
+      ],
+      "affixes": [
+        {
+          "name": "物理最大伤害"
+        },
+        {
+          "name": "力量"
+        },
+        {
+          "name": "技能冷却时间减少"
+        }
+      ],
+      "awakening": [],
+      "sources": [
+        {
+          "id": "craft-91000001",
+          "group": "制作",
+          "title": "练习剑制作",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": "0",
+          "condition": "演示制作配方"
+        }
+      ],
+      "uses": [
+        {
+          "id": "upgrade-91000001",
+          "group": "升级",
+          "title": "强化为 +1",
+          "input": {
+            "id": "91000001",
+            "name": "星光练习剑",
+            "quantity": "1"
+          },
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "6"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000002",
+              "name": "星光练习剑 +1",
+              "quantity": "1"
+            }
+          ],
+          "cost": "1,200",
+          "condition": "仅展示这一阶段的材料"
+        }
+      ]
+    },
+    {
+      "id": "91000002",
+      "name": "星光练习剑 +1",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "weapon",
+          "label": "武器"
+        },
+        {
+          "key": "onehand",
+          "label": "单手剑"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "一柄用来展示普通与觉醒版本的练习剑。\n这里保留长说明的原始换行；属性和强化阶段均为演示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#e75aa0",
+      "form": "普通",
+      "stage": "+1",
+      "initial": false,
+      "versions": [
+        "91000001",
+        "91000002"
+      ],
+      "jobs": [
+        "盾卫",
+        "守护者"
+      ],
+      "levels": {
+        "normal": 120,
+        "transcend1": 0
+      },
+      "stats": [
+        {
+          "label": "最小攻击力",
+          "value": "150",
+          "unit": "点"
+        },
+        {
+          "label": "物理最小伤害",
+          "value": "13",
+          "unit": "%"
+        },
+        {
+          "label": "移动速度",
+          "value": "-2",
+          "unit": "%"
+        },
+        {
+          "label": "耐久",
+          "value": null
+        }
+      ],
+      "effects": [
+        "星光斩 +2 Lv\n效果条件：装备此道具时。"
+      ],
+      "affixes": [
+        {
+          "name": "物理最大伤害"
+        },
+        {
+          "name": "力量"
+        },
+        {
+          "name": "技能冷却时间减少"
+        }
+      ],
+      "awakening": [],
+      "sources": [
+        {
+          "id": "craft-91000002",
+          "group": "制作",
+          "title": "练习剑制作",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000002",
+              "name": "星光练习剑 +1",
+              "quantity": "1"
+            }
+          ],
+          "cost": "0",
+          "condition": "演示制作配方"
+        }
+      ],
+      "uses": []
+    },
+    {
+      "id": "91000003",
+      "name": "觉醒·星光练习剑",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "weapon",
+          "label": "武器"
+        },
+        {
+          "key": "onehand",
+          "label": "单手剑"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "一柄用来展示普通与觉醒版本的练习剑。\n这里保留长说明的原始换行；属性和强化阶段均为演示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#e75aa0",
+      "form": "觉醒",
+      "stage": "初始",
+      "initial": true,
+      "versions": [
+        "91000003",
+        "91000004"
+      ],
+      "jobs": [
+        "盾卫",
+        "守护者"
+      ],
+      "levels": {
+        "normal": 100,
+        "transcend1": 0
+      },
+      "stats": [
+        {
+          "label": "最小攻击力",
+          "value": "180",
+          "unit": "点"
+        },
+        {
+          "label": "物理最小伤害",
+          "value": "13",
+          "unit": "%"
+        },
+        {
+          "label": "移动速度",
+          "value": "-2",
+          "unit": "%"
+        },
+        {
+          "label": "耐久",
+          "value": null
+        }
+      ],
+      "effects": [
+        "星光斩 +2 Lv\n效果条件：装备此道具时。"
+      ],
+      "affixes": [
+        {
+          "name": "物理最大伤害"
+        },
+        {
+          "name": "力量"
+        },
+        {
+          "name": "技能冷却时间减少"
+        }
+      ],
+      "awakening": [
+        {
+          "stage": "阶段一",
+          "candidates": [
+            "力量 +10 点",
+            "物理最大伤害 +1.5%"
+          ]
+        },
+        {
+          "stage": "阶段二",
+          "candidates": [
+            "星光斩 +1 Lv",
+            "力量 +12 点",
+            "技能冷却时间 -0.5 秒"
+          ]
+        },
+        {
+          "stage": "阶段三",
+          "candidates": [
+            "星光斩 +2 Lv",
+            "最大生命值 +100 点"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "craft-91000003",
+          "group": "制作",
+          "title": "练习剑制作",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000003",
+              "name": "觉醒·星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": "0",
+          "condition": "演示制作配方"
+        }
+      ],
+      "uses": [
+        {
+          "id": "upgrade-91000003",
+          "group": "升级",
+          "title": "强化为 +1",
+          "input": {
+            "id": "91000003",
+            "name": "觉醒·星光练习剑",
+            "quantity": "1"
+          },
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "6"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000004",
+              "name": "觉醒·星光练习剑 +1",
+              "quantity": "1"
+            }
+          ],
+          "cost": "1,200",
+          "condition": "仅展示这一阶段的材料"
+        }
+      ]
+    },
+    {
+      "id": "91000004",
+      "name": "觉醒·星光练习剑 +1",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "weapon",
+          "label": "武器"
+        },
+        {
+          "key": "onehand",
+          "label": "单手剑"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "一柄用来展示普通与觉醒版本的练习剑。\n这里保留长说明的原始换行；属性和强化阶段均为演示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#e75aa0",
+      "form": "觉醒",
+      "stage": "+1",
+      "initial": false,
+      "versions": [
+        "91000003",
+        "91000004"
+      ],
+      "jobs": [
+        "盾卫",
+        "守护者"
+      ],
+      "levels": {
+        "normal": 100,
+        "transcend1": 0
+      },
+      "stats": [
+        {
+          "label": "最小攻击力",
+          "value": "210",
+          "unit": "点"
+        },
+        {
+          "label": "物理最小伤害",
+          "value": "13",
+          "unit": "%"
+        },
+        {
+          "label": "移动速度",
+          "value": "-2",
+          "unit": "%"
+        },
+        {
+          "label": "耐久",
+          "value": null
+        }
+      ],
+      "effects": [
+        "星光斩 +2 Lv\n效果条件：装备此道具时。"
+      ],
+      "affixes": [
+        {
+          "name": "物理最大伤害"
+        },
+        {
+          "name": "力量"
+        },
+        {
+          "name": "技能冷却时间减少"
+        }
+      ],
+      "awakening": [
+        {
+          "stage": "阶段一",
+          "candidates": [
+            "力量 +10 点",
+            "物理最大伤害 +1.5%"
+          ]
+        },
+        {
+          "stage": "阶段二",
+          "candidates": [
+            "星光斩 +1 Lv",
+            "力量 +12 点",
+            "技能冷却时间 -0.5 秒"
+          ]
+        },
+        {
+          "stage": "阶段三",
+          "candidates": [
+            "星光斩 +2 Lv",
+            "最大生命值 +100 点"
+          ]
+        }
+      ],
+      "sources": [
+        {
+          "id": "craft-91000004",
+          "group": "制作",
+          "title": "练习剑制作",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000004",
+              "name": "觉醒·星光练习剑 +1",
+              "quantity": "1"
+            }
+          ],
+          "cost": "0",
+          "condition": "演示制作配方"
+        }
+      ],
+      "uses": []
+    },
+    {
+      "id": "91000005",
+      "name": "星光碎片",
+      "category": "material",
+      "path": [
+        {
+          "key": "material",
+          "label": "其他"
+        },
+        {
+          "key": "craft-material",
+          "label": "制作材料"
+        },
+        {
+          "key": "ore",
+          "label": "矿物"
+        }
+      ],
+      "icon": "/demo/material.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#387bcc",
+      "uses": [
+        {
+          "id": "material-use-0",
+          "group": "制作",
+          "title": "练习配方 1",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "6"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": "0"
+        },
+        {
+          "id": "material-use-1",
+          "group": "制作",
+          "title": "练习配方 2",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "7"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000003",
+              "name": "觉醒·星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        },
+        {
+          "id": "material-use-2",
+          "group": "制作",
+          "title": "练习配方 3",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "8"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        },
+        {
+          "id": "material-use-3",
+          "group": "制作",
+          "title": "练习配方 4",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "9"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000003",
+              "name": "觉醒·星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        },
+        {
+          "id": "material-use-4",
+          "group": "升级",
+          "title": "练习配方 5",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "10"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        },
+        {
+          "id": "material-use-5",
+          "group": "升级",
+          "title": "练习配方 6",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "11"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000003",
+              "name": "觉醒·星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        },
+        {
+          "id": "material-use-6",
+          "group": "升级",
+          "title": "练习配方 7",
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            }
+          ],
+          "cost": null
+        }
+      ],
+      "sources": [
+        {
+          "id": "source-fragment",
+          "group": "其他来源",
+          "title": "练习宝箱",
+          "note": "这是候选产物，不能理解为每次必得。",
+          "products": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "1～3"
+            }
+          ],
+          "cost": null
+        }
+      ]
+    },
+    {
+      "id": "91000006",
+      "name": "清晨恢复药水",
+      "category": "consumable",
+      "path": [
+        {
+          "key": "consumable",
+          "label": "消耗"
+        },
+        {
+          "key": "potion",
+          "label": "药水"
+        }
+      ],
+      "icon": "/demo/consumable.svg",
+      "description": "使用后恢复生命值。\n普通区域与 PVP 效果分别以对应说明为准。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "buffs": [
+        {
+          "name": "晨曦守护",
+          "description": "最大生命值 +5%\n持续 30 秒；仅普通区域生效。",
+          "target": "自身 · 普通区域"
+        },
+        {
+          "name": "晨曦守护（PVP）",
+          "description": "最大生命值 +1%\n持续 10 秒。",
+          "target": "自身 · PVP"
+        }
+      ],
+      "sources": [
+        {
+          "id": "potion-shop",
+          "group": "其他来源",
+          "title": "药水商人 · 露米（演示）",
+          "location": "练习镇 → 广场",
+          "note": "菜单：恢复道具；售价与币种未收录。",
+          "cost": null
+        }
+      ]
+    },
+    {
+      "id": "91000007",
+      "name": "给远方旅行者的一封尚未寄出的很长很长的信",
+      "category": "quest",
+      "path": [
+        {
+          "key": "quest",
+          "label": "任务"
+        },
+        {
+          "key": "story-quest",
+          "label": "剧情任务"
+        },
+        {
+          "key": "letter",
+          "label": "任务信件"
+        }
+      ],
+      "icon": "/demo/quest.svg",
+      "description": "把这封信交给旅行者。\n任务独立页面尚未接入；此处仅展示关系摘要。",
+      "flags": {
+        "trade": false,
+        "storage": true,
+        "destroy": null,
+        "auction": false
+      },
+      "quests": [
+        {
+          "id": "demo-quest-01",
+          "name": "星光下的约定",
+          "role": "提交消耗",
+          "quantity": "1 封"
+        }
+      ]
+    },
+    {
+      "id": "91000008",
+      "name": "小小星云猫",
+      "category": "pet",
+      "path": [
+        {
+          "key": "pet",
+          "label": "宠物"
+        },
+        {
+          "key": "pet-companion",
+          "label": "伙伴"
+        }
+      ],
+      "icon": "/demo/pet.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#b36dcf",
+      "stats": [
+        {
+          "label": "宠物技能等级",
+          "value": "1",
+          "unit": "Lv"
+        }
+      ],
+      "effects": [
+        "跟随时洒下星光（演示效果）。"
+      ],
+      "formations": [
+        {
+          "id": "demo-formation-1",
+          "name": "星夜同行",
+          "stats": [
+            {
+              "label": "力量",
+              "value": "10",
+              "unit": "点"
+            }
+          ],
+          "effect": "阵容满足条件时生效。不是这只宠物单独触发，也不与其他方案累计。"
+        },
+        {
+          "id": "demo-formation-2",
+          "name": "加成方案 2",
+          "stats": [
+            {
+              "label": "力量",
+              "value": "11",
+              "unit": "点"
+            }
+          ],
+          "effect": "阵容满足条件时生效。不是这只宠物单独触发，也不与其他方案累计。"
+        },
+        {
+          "id": "demo-formation-3",
+          "name": "加成方案 3",
+          "stats": [
+            {
+              "label": "力量",
+              "value": "12",
+              "unit": "点"
+            }
+          ],
+          "effect": "阵容满足条件时生效。不是这只宠物单独触发，也不与其他方案累计。"
+        },
+        {
+          "id": "demo-formation-4",
+          "name": "加成方案 4",
+          "stats": [
+            {
+              "label": "力量",
+              "value": "13",
+              "unit": "点"
+            }
+          ],
+          "effect": "阵容满足条件时生效。不是这只宠物单独触发，也不与其他方案累计。"
+        }
+      ]
+    },
+    {
+      "id": "91000009",
+      "name": "月光练习戒指",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "accessory",
+          "label": "饰品"
+        },
+        {
+          "key": "ring",
+          "label": "戒指"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "color": "#b36dcf",
+      "initial": true,
+      "stage": "初始",
+      "form": "普通",
+      "levels": {
+        "normal": 100
+      },
+      "stats": [
+        {
+          "label": "最大生命值",
+          "value": "100",
+          "unit": "点"
+        }
+      ],
+      "set": {
+        "id": "demo-set-01",
+        "name": "月下旅人",
+        "tiers": [
+          {
+            "count": 2,
+            "effects": [
+              "最大生命值 +100 点"
+            ]
+          },
+          {
+            "count": 3,
+            "effects": [
+              "力量 +15 点",
+              "跳跃时出现月光（演示特效）。"
+            ]
+          }
+        ],
+        "members": [
+          {
+            "id": "91000009",
+            "name": "月光练习戒指",
+            "quantity": "1"
+          },
+          {
+            "id": "91999991",
+            "name": "月光练习耳环",
+            "quantity": "1",
+            "available": false
+          }
+        ]
+      }
+    },
+    {
+      "id": "91000010",
+      "name": "微光练习宝石",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "gem",
+          "label": "宝石"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "仅展示初始候选池。最终洗练、镶嵌范围尚未核验。80% 为区间参考位置，不是概率或实例值。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "initial": true,
+      "levels": {
+        "transcend2": 0.01
+      },
+      "affixes": [
+        {
+          "name": "力量",
+          "min": "2",
+          "max": "15",
+          "unit": "点",
+          "reference": "12.4"
+        },
+        {
+          "name": "冷却时间",
+          "min": "-2",
+          "max": "-1",
+          "unit": "秒",
+          "reference": "-1.2"
+        },
+        {
+          "name": "固定值示例",
+          "min": "0",
+          "max": "0",
+          "unit": "%",
+          "reference": "0"
+        },
+        {
+          "name": "单位尚未收录",
+          "min": "1",
+          "max": "10"
+        }
+      ]
+    },
+    {
+      "id": "91000011",
+      "name": "「星光见习生」称号学习书",
+      "category": "consumable",
+      "path": [
+        {
+          "key": "consumable",
+          "label": "消耗"
+        },
+        {
+          "key": "title-book",
+          "label": "称号书"
+        }
+      ],
+      "icon": "/demo/consumable.svg",
+      "description": "本书的演示解锁成功率为 25%。\n此说明属于学习书，称号属性在上方单独展示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "title": {
+        "name": "星光见习生",
+        "chance": "25%",
+        "stats": [
+          {
+            "label": "幸运",
+            "value": "5",
+            "unit": "点"
+          }
+        ],
+        "effect": "称号展示特效（演示）。"
+      }
+    },
+    {
+      "id": "91000012",
+      "name": "打瞌睡的小蘑菇",
+      "category": "pet",
+      "path": [
+        {
+          "key": "pet",
+          "label": "宠物"
+        },
+        {
+          "key": "pet-companion",
+          "label": "伙伴"
+        }
+      ],
+      "icon": "/demo/pet.svg",
+      "description": "这个示例用于检查未收录阵容时的提示。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "formations": [],
+      "stats": []
+    },
+    {
+      "id": "91000013",
+      "name": "褪色的旧纸片",
+      "category": "material",
+      "path": [
+        {
+          "key": "material",
+          "label": "其他"
+        },
+        {
+          "key": "collectible",
+          "label": "收集品"
+        }
+      ],
+      "icon": "/demo/material.svg",
+      "description": "",
+      "flags": {
+        "trade": null,
+        "storage": null,
+        "destroy": null,
+        "auction": null
+      }
+    },
+    {
+      "id": "91000014",
+      "name": "零门槛练习徽章",
+      "category": "equipment",
+      "path": [
+        {
+          "key": "equipment",
+          "label": "装备"
+        },
+        {
+          "key": "battle",
+          "label": "战斗物品"
+        },
+        {
+          "key": "badge",
+          "label": "徽章"
+        }
+      ],
+      "icon": "/demo/equipment.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "initial": true,
+      "jobs": [
+        "盾卫"
+      ],
+      "levels": {
+        "normal": 0,
+        "transcend1": 1000,
+        "transcend2": 0.01
+      },
+      "stats": [
+        {
+          "label": "固定加成",
+          "value": "0",
+          "unit": "%"
+        }
+      ]
+    },
+    {
+      "id": "91000015",
+      "name": "写满祝福的旅行点心",
+      "category": "consumable",
+      "path": [
+        {
+          "key": "consumable",
+          "label": "消耗"
+        },
+        {
+          "key": "food",
+          "label": "料理"
+        }
+      ],
+      "icon": "/demo/consumable.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      },
+      "buffs": [
+        {
+          "name": null,
+          "description": "已收录效果说明，名称暂缺。",
+          "target": "自身"
+        },
+        {
+          "name": "旅行的祝福",
+          "description": null,
+          "target": "自身"
+        }
+      ]
+    },
+    {
+      "id": "91000016",
+      "name": "尚待辨识的碎屑",
+      "category": "material",
+      "path": [],
+      "icon": "/demo/material.svg",
+      "description": "分类尚未辨识；无分类选择时可以检索。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      }
+    },
+    {
+      "id": "91000017",
+      "name": "清晨恢复药水",
+      "category": "consumable",
+      "path": [
+        {
+          "key": "consumable",
+          "label": "消耗"
+        },
+        {
+          "key": "potion",
+          "label": "药水"
+        }
+      ],
+      "icon": "/demo/consumable.svg",
+      "description": "这是同名不同编号的演示记录，保留独立身份。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      }
+    },
+    {
+      "id": "91000018",
+      "name": "古老星图中的第七块铭文碎片",
+      "category": "material",
+      "path": [
+        {
+          "key": "material",
+          "label": "其他"
+        },
+        {
+          "key": "craft-material",
+          "label": "制作材料"
+        },
+        {
+          "key": "special-material",
+          "label": "特殊材料"
+        },
+        {
+          "key": "ancient",
+          "label": "古代遗物"
+        },
+        {
+          "key": "starmap",
+          "label": "星图"
+        },
+        {
+          "key": "engraved",
+          "label": "铭文碎片"
+        }
+      ],
+      "icon": "/demo/material.svg",
+      "description": "此条为页面演示资料。名称、数值与关系仅用于检查排版，不对应游戏定义。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      }
+    },
+    {
+      "id": "91000019",
+      "name": "未完成的旅行手记",
+      "category": "quest",
+      "path": [
+        {
+          "key": "quest",
+          "label": "任务"
+        },
+        {
+          "key": "story-quest",
+          "label": "剧情任务"
+        }
+      ],
+      "icon": "/demo/quest.svg",
+      "description": "未收录关联任务，不代表无法使用。",
+      "flags": {
+        "trade": true,
+        "storage": true,
+        "destroy": false,
+        "auction": null
+      }
+    }
+  ]
+}
