@@ -82,6 +82,12 @@ test("320px full paths, nested relations, browser back restores search and focus
   await noOverflow(page);
   await screenshot(page, "320-awakening");
   await page.getByRole("tab", { name: "获取方式", exact: true }).click();
+  await page
+    .getByRole("button", {
+      name: "[练习成品][Lv1]成品制造 > 单手剑 1 个方案",
+      exact: true,
+    })
+    .click();
   await page.getByRole("link", { name: "星光碎片", exact: true }).click();
   await expect(page.locator("#detail-title")).toHaveText("星光碎片");
   await page.getByRole("button", { name: "返回上一页", exact: true }).click();
@@ -236,6 +242,9 @@ test("320px dense content, IME composition, scroll restoration and system theme"
   await page.locator("#item-91000005").click();
   await page.getByRole("tab", { name: "材料用途", exact: true }).click();
   await page.getByRole("button", { name: "详情下一页", exact: true }).click();
+  await page
+    .getByRole("button", { name: "[升级][星光练习剑] 1 个方案", exact: true })
+    .click();
   await page.getByRole("link", { name: "星光练习剑", exact: true }).click();
   await page.getByRole("button", { name: "返回上一页", exact: true }).click();
   await expect(

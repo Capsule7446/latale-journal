@@ -960,6 +960,70 @@ legend {
 .relation-input {
   line-height: 1.9;
 }
+.route-group {
+  border-bottom: 1px solid var(--border);
+}
+.detail-body > .route-group + .route-group {
+  margin-top: 0;
+}
+.detail-body .route-heading {
+  margin: 0;
+}
+.route-toggle {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto 18px;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-height: 56px;
+  padding: 12px 0;
+  text-align: left;
+  font-size: 13px;
+  line-height: 1.8;
+}
+.route-toggle:hover,
+.route-toggle[aria-expanded="true"] {
+  color: var(--primary);
+}
+.route-toggle[aria-expanded="true"] > svg {
+  transform: rotate(180deg);
+}
+.route-description {
+  overflow-wrap: anywhere;
+}
+.route-count {
+  font-size: 11px;
+  font-weight: 400;
+  color: var(--muted-foreground);
+  white-space: nowrap;
+}
+.route-incomplete {
+  margin: -3px 0 12px;
+  font-size: 11px;
+}
+.route-schemes {
+  padding: 0 0 18px 16px;
+  border-left: 2px solid var(--border);
+  margin-bottom: 18px;
+}
+.route-schemes[hidden] {
+  display: none;
+}
+.route-scheme {
+  padding: 18px 0;
+}
+.route-scheme:last-child {
+  border-bottom: 0;
+  padding-bottom: 0;
+}
+.detail-body .route-scheme h4 {
+  margin: 4px 0 12px;
+  font-size: 13px;
+}
+.route-scheme h5 {
+  margin: 0 0 5px;
+  font-size: 12px;
+}
 .copy-control {
   display: inline-flex;
   align-items: center;

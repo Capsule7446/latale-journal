@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronDown, ChevronRight } from "lucide-react";
 import type { DemoItem, Reference, Relation } from "./demo-model";
 import type { Update } from "./navigation";
+import { expandedRoutes, groupRoutes, toggleRoute } from "./routes";
 import {
   CopyNames,
   Empty,
@@ -74,36 +75,49 @@ function ItemLink({
 function RelationCard({
   relation,
   props,
+  scope,
+  index,
 }: {
   relation: Relation;
   props: Props;
+  scope: string;
+  index: number;
 }) {
+  const schemeKey = `${scope}-${encodeURIComponent(relation.id)}`;
   const link = (role: string) => (reference: Reference, index: number) => (
     <li key={`${reference.id}-${index}`}>
       <ItemLink
         reference={reference}
-        focusKey={`${relation.id}-${role}-${index}`}
+        focusKey={`${schemeKey}-${role}-${index}`}
         {...props}
       />
     </li>
   );
   return (
-    <article className="relation-card">
-      <span className="eyebrow">{relation.group}</span>
-      <h3>{relation.title}</h3>
+    <article
+      className="relation-card route-scheme"
+      aria-labelledby={`${schemeKey}-title`}
+    >
+      <span className="eyebrow">方案 {index + 1}</span>
+      <h4 id={`${schemeKey}-title`}>{relation.title}</h4>
       {relation.input && (
         <div className="relation-input">
-          主道具：
+          {relation.route?.kind === "decomposition"
+            ? "分解输入"
+            : relation.route?.kind === "upgrade"
+              ? "升级主道具"
+              : "主道具"}
+          ：
           <ItemLink
             reference={relation.input}
-            focusKey={`${relation.id}-input`}
+            focusKey={`${schemeKey}-input`}
             {...props}
           />
         </div>
       )}
       {relation.materials && (
         <section>
-          <h4>材料</h4>
+          <h5>材料</h5>
           <ul className="reference-list">
             {relation.materials.map(link("material"))}
           </ul>
@@ -111,7 +125,7 @@ function RelationCard({
       )}
       {relation.products && (
         <section>
-          <h4>产物</h4>
+          <h5>产物</h5>
           <ul className="reference-list">
             {relation.products.map(link("product"))}
           </ul>
@@ -159,6 +173,8 @@ function Relations({
     (row) => group === "全部" || row.group === group,
   );
   const prefix = `${item.id}-${direction}-`;
+  const routes = groupRoutes(item.id, direction, selected);
+  const expanded = expandedRoutes(params);
   return (
     <>
       <Tabs
@@ -169,11 +185,56 @@ function Relations({
           update({ [parameter]: value, [`${prefix}page`]: "1" })
         }
       />
-      {selected.length ? (
+      {routes.length ? (
         <Paged
-          rows={selected.map((relation) => (
-            <RelationCard key={relation.id} relation={relation} props={props} />
-          ))}
+          rows={routes.map((route) => {
+            const scope = `route-${encodeURIComponent(route.key)}`;
+            const open = expanded.includes(route.key);
+            return (
+              <section className="route-group" key={route.key}>
+                <h3 className="route-heading">
+                  <button
+                    className="route-toggle"
+                    type="button"
+                    id={`${scope}-toggle`}
+                    aria-expanded={open}
+                    aria-controls={`${scope}-schemes`}
+                    onClick={() =>
+                      update({ "open-routes": toggleRoute(params, route.key) })
+                    }
+                  >
+                    <span className="route-description">
+                      {route.description}
+                    </span>
+                    <span className="route-count">
+                      {route.schemes.length} 个方案
+                    </span>
+                    <ChevronDown aria-hidden="true" />
+                  </button>
+                </h3>
+                {route.incomplete && (
+                  <p className="route-incomplete muted">
+                    途径资料不全，此方案单独显示。
+                  </p>
+                )}
+                <div
+                  className="route-schemes"
+                  id={`${scope}-schemes`}
+                  hidden={!open}
+                >
+                  {route.schemes.map((relation, index) => (
+                    <RelationCard
+                      key={relation.id}
+                      relation={relation}
+                      props={props}
+                      scope={scope}
+                      index={index}
+                    />
+                  ))}
+                </div>
+              </section>
+            );
+          })}
           params={params}
           update={update}
           prefix={prefix}
@@ -499,7 +560,11 @@ export function ItemDetails(props: Props) {
     <div className="detail-inner">
       <button className="button back-button" onClick={back}>
         <ArrowLeft />
-        返回{(history.state?.journal?.depth || 0) > 1 ? "上一页" : "列表"}
+        返回
+        {history.state?.journal?.fromItem ||
+        (history.state?.journal?.depth || 0) > 1
+          ? "上一页"
+          : "列表"}
       </button>
       <header className="detail-heading">
         <ItemIcon item={item} />

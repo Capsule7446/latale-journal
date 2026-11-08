@@ -12,10 +12,22 @@ export type Reference = {
   quantity?: string;
   available?: boolean;
 };
+// Explicit display identities for fictional routes, not a frozen production schema.
+export type RouteIdentity = { id: string | null; name: string | null };
+export type RelationRoute =
+  | { kind: "exchange" | "purchase"; npc: RouteIdentity | null }
+  | {
+      kind: "life-skill";
+      category: RouteIdentity | null;
+      level: number | null;
+      path: RouteIdentity[] | null;
+    }
+  | { kind: "decomposition" | "upgrade" };
 export type Relation = {
   id: string;
   group: string;
   title: string;
+  route?: RelationRoute;
   note?: string;
   input?: Reference;
   materials?: Reference[];

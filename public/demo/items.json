@@ -89,6 +89,24 @@
           "id": "craft-91000001",
           "group": "制作",
           "title": "练习剑制作",
+          "route": {
+            "kind": "life-skill",
+            "category": {
+              "id": "demo-practice-products",
+              "name": "练习成品"
+            },
+            "level": 1,
+            "path": [
+              {
+                "id": "demo-finished-crafting",
+                "name": "成品制造"
+              },
+              {
+                "id": "demo-sword-crafting",
+                "name": "单手剑"
+              }
+            ]
+          },
           "materials": [
             {
               "id": "91000005",
@@ -112,6 +130,9 @@
           "id": "upgrade-91000001",
           "group": "升级",
           "title": "强化为 +1",
+          "route": {
+            "kind": "upgrade"
+          },
           "input": {
             "id": "91000001",
             "name": "星光练习剑",
@@ -223,6 +244,24 @@
           "id": "craft-91000002",
           "group": "制作",
           "title": "练习剑制作",
+          "route": {
+            "kind": "life-skill",
+            "category": {
+              "id": "demo-practice-products",
+              "name": "练习成品"
+            },
+            "level": 1,
+            "path": [
+              {
+                "id": "demo-finished-crafting",
+                "name": "成品制造"
+              },
+              {
+                "id": "demo-sword-crafting",
+                "name": "单手剑"
+              }
+            ]
+          },
           "materials": [
             {
               "id": "91000005",
@@ -353,6 +392,24 @@
           "id": "craft-91000003",
           "group": "制作",
           "title": "练习剑制作",
+          "route": {
+            "kind": "life-skill",
+            "category": {
+              "id": "demo-practice-products",
+              "name": "练习成品"
+            },
+            "level": 1,
+            "path": [
+              {
+                "id": "demo-finished-crafting",
+                "name": "成品制造"
+              },
+              {
+                "id": "demo-sword-crafting",
+                "name": "单手剑"
+              }
+            ]
+          },
           "materials": [
             {
               "id": "91000005",
@@ -376,6 +433,9 @@
           "id": "upgrade-91000003",
           "group": "升级",
           "title": "强化为 +1",
+          "route": {
+            "kind": "upgrade"
+          },
           "input": {
             "id": "91000003",
             "name": "觉醒·星光练习剑",
@@ -510,6 +570,24 @@
           "id": "craft-91000004",
           "group": "制作",
           "title": "练习剑制作",
+          "route": {
+            "kind": "life-skill",
+            "category": {
+              "id": "demo-practice-products",
+              "name": "练习成品"
+            },
+            "level": 1,
+            "path": [
+              {
+                "id": "demo-finished-crafting",
+                "name": "成品制造"
+              },
+              {
+                "id": "demo-sword-crafting",
+                "name": "单手剑"
+              }
+            ]
+          },
           "materials": [
             {
               "id": "91000005",
@@ -559,14 +637,26 @@
       "color": "#387bcc",
       "uses": [
         {
-          "id": "material-use-0",
-          "group": "制作",
-          "title": "练习配方 1",
+          "id": "demo-exchange-east-paper",
+          "group": "兑换",
+          "title": "碎片与纸片兑换",
+          "route": {
+            "kind": "exchange",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
           "materials": [
             {
               "id": "91000005",
               "name": "星光碎片",
               "quantity": "6"
+            },
+            {
+              "id": "91000013",
+              "name": "褪色的旧纸片",
+              "quantity": "2"
             }
           ],
           "products": [
@@ -576,17 +666,26 @@
               "quantity": "1"
             }
           ],
-          "cost": "0"
+          "cost": "0",
+          "location": "练习镇 > 东门",
+          "condition": "完成练习委托后办理（演示）"
         },
         {
-          "id": "material-use-1",
-          "group": "制作",
-          "title": "练习配方 2",
+          "id": "demo-exchange-west",
+          "group": "兑换",
+          "title": "西门兑换方案",
+          "route": {
+            "kind": "exchange",
+            "npc": {
+              "id": "demo-npc-mina-west",
+              "name": "米娜"
+            }
+          },
           "materials": [
             {
               "id": "91000005",
               "name": "星光碎片",
-              "quantity": "7"
+              "quantity": "20"
             }
           ],
           "products": [
@@ -596,92 +695,32 @@
               "quantity": "1"
             }
           ],
-          "cost": null
+          "cost": "500",
+          "location": "练习镇 > 西门",
+          "condition": "在西门独立办理（演示）"
         },
         {
-          "id": "material-use-2",
+          "id": "demo-craft-fists",
           "group": "制作",
-          "title": "练习配方 3",
-          "materials": [
-            {
-              "id": "91000005",
-              "name": "星光碎片",
-              "quantity": "8"
-            }
-          ],
-          "products": [
-            {
-              "id": "91000001",
-              "name": "星光练习剑",
-              "quantity": "1"
-            }
-          ],
-          "cost": null
-        },
-        {
-          "id": "material-use-3",
-          "group": "制作",
-          "title": "练习配方 4",
-          "materials": [
-            {
-              "id": "91000005",
-              "name": "星光碎片",
-              "quantity": "9"
-            }
-          ],
-          "products": [
-            {
-              "id": "91000003",
-              "name": "觉醒·星光练习剑",
-              "quantity": "1"
-            }
-          ],
-          "cost": null
-        },
-        {
-          "id": "material-use-4",
-          "group": "升级",
-          "title": "练习配方 5",
-          "materials": [
-            {
-              "id": "91000005",
-              "name": "星光碎片",
-              "quantity": "10"
-            }
-          ],
-          "products": [
-            {
-              "id": "91000001",
-              "name": "星光练习剑",
-              "quantity": "1"
-            }
-          ],
-          "cost": null
-        },
-        {
-          "id": "material-use-5",
-          "group": "升级",
-          "title": "练习配方 6",
-          "materials": [
-            {
-              "id": "91000005",
-              "name": "星光碎片",
-              "quantity": "11"
-            }
-          ],
-          "products": [
-            {
-              "id": "91000003",
-              "name": "觉醒·星光练习剑",
-              "quantity": "1"
-            }
-          ],
-          "cost": null
-        },
-        {
-          "id": "material-use-6",
-          "group": "升级",
-          "title": "练习配方 7",
+          "title": "练习拳套制作",
+          "route": {
+            "kind": "life-skill",
+            "category": {
+              "id": "demo-giantia-products",
+              "name": "吉恩蒂亚成品"
+            },
+            "level": 1,
+            "path": [
+              {
+                "id": "demo-finished-crafting",
+                "name": "成品制造"
+              },
+              {
+                "id": "demo-fist-crafting",
+                "name": "拳套"
+              }
+            ]
+          },
           "materials": [
             {
               "id": "91000005",
@@ -691,15 +730,241 @@
           ],
           "products": [
             {
-              "id": "91000001",
-              "name": "星光练习剑",
+              "id": "91999992",
+              "name": "星光练习拳套",
+              "quantity": "1",
+              "available": false
+            }
+          ],
+          "cost": "0",
+          "condition": "用户指定的生活技能外层格式示例；未由游戏资料解析。"
+        },
+        {
+          "id": "demo-purchase-east",
+          "group": "购买",
+          "title": "以碎片支付的商店方案",
+          "route": {
+            "kind": "purchase",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
               "quantity": "1"
             }
           ],
-          "cost": null
+          "products": [
+            {
+              "id": "91000006",
+              "name": "清晨恢复药水",
+              "quantity": "2"
+            }
+          ],
+          "cost": null,
+          "location": "练习镇 > 东门",
+          "condition": "碎片作为付款道具；额外费用未收录（演示）"
+        },
+        {
+          "id": "demo-decompose-fragment",
+          "group": "分解",
+          "title": "碎片分解方案",
+          "route": {
+            "kind": "decomposition"
+          },
+          "input": {
+            "id": "91000005",
+            "name": "星光碎片",
+            "quantity": "1"
+          },
+          "products": [
+            {
+              "id": "91000013",
+              "name": "褪色的旧纸片",
+              "quantity": "2"
+            },
+            {
+              "id": "91000018",
+              "name": "古老星图中的第七块铭文碎片",
+              "quantity": "1"
+            }
+          ],
+          "cost": null,
+          "condition": "产物是候选，未收录概率（演示）"
+        },
+        {
+          "id": "demo-upgrade-sword",
+          "group": "升级",
+          "title": "练习剑强化方案",
+          "route": {
+            "kind": "upgrade"
+          },
+          "input": {
+            "id": "91000001",
+            "name": "星光练习剑",
+            "quantity": "1"
+          },
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "6"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000002",
+              "name": "星光练习剑 +1",
+              "quantity": "1"
+            }
+          ],
+          "cost": "1,200",
+          "condition": "仅展示当前阶段，不合计整条路线。"
+        },
+        {
+          "id": "demo-exchange-east-engraved",
+          "group": "兑换",
+          "title": "碎片与铭文兑换",
+          "route": {
+            "kind": "exchange",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
+          "materials": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "10"
+            },
+            {
+              "id": "91000018",
+              "name": "古老星图中的第七块铭文碎片",
+              "quantity": "3"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000001",
+              "name": "星光练习剑",
+              "quantity": "1"
+            },
+            {
+              "id": "91000006",
+              "name": "清晨恢复药水",
+              "quantity": "2"
+            }
+          ],
+          "cost": null,
+          "location": "练习镇 > 工坊",
+          "condition": "同一 NPC 的另一办理地点与材料方案（演示）"
         }
       ],
       "sources": [
+        {
+          "id": "demo-fragment-exchange-paper",
+          "group": "其他来源",
+          "title": "纸片兑换碎片",
+          "route": {
+            "kind": "exchange",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
+          "materials": [
+            {
+              "id": "91000013",
+              "name": "褪色的旧纸片",
+              "quantity": "2"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "6"
+            }
+          ],
+          "cost": "0",
+          "location": "练习镇 > 东门"
+        },
+        {
+          "id": "demo-fragment-decomposition",
+          "group": "其他来源",
+          "title": "分解练习剑获得碎片",
+          "route": {
+            "kind": "decomposition"
+          },
+          "input": {
+            "id": "91000001",
+            "name": "星光练习剑",
+            "quantity": "1"
+          },
+          "products": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "8"
+            }
+          ],
+          "cost": "0",
+          "condition": "概率未收录（演示）"
+        },
+        {
+          "id": "demo-fragment-exchange-engraved",
+          "group": "其他来源",
+          "title": "铭文兑换碎片",
+          "route": {
+            "kind": "exchange",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
+          "materials": [
+            {
+              "id": "91000018",
+              "name": "古老星图中的第七块铭文碎片",
+              "quantity": "1"
+            }
+          ],
+          "products": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "12"
+            }
+          ],
+          "cost": null,
+          "location": "练习镇 > 工坊",
+          "condition": "与另一兑换方案分别保留（演示）"
+        },
+        {
+          "id": "demo-fragment-purchase",
+          "group": "其他来源",
+          "title": "购买碎片",
+          "route": {
+            "kind": "purchase",
+            "npc": {
+              "id": "demo-npc-alo-east",
+              "name": "阿洛"
+            }
+          },
+          "products": [
+            {
+              "id": "91000005",
+              "name": "星光碎片",
+              "quantity": "1"
+            }
+          ],
+          "cost": null,
+          "location": "练习镇 > 东门"
+        },
         {
           "id": "source-fragment",
           "group": "其他来源",
@@ -755,6 +1020,13 @@
           "id": "potion-shop",
           "group": "其他来源",
           "title": "药水商人 · 露米（演示）",
+          "route": {
+            "kind": "purchase",
+            "npc": {
+              "id": "demo-npc-lumi",
+              "name": "露米"
+            }
+          },
           "location": "练习镇 → 广场",
           "note": "菜单：恢复道具；售价与币种未收录。",
           "cost": null

@@ -20,6 +20,7 @@ npm run dev
 1. 默认列表显示 17 条初始形态样例；取消“只看初始状态”可查看全部 19 条。
 2. 点击五个品类中的道具，检查固定标签、来源／用途及强化切换；窄屏用“返回列表”恢复检索位置。
 3. 页头“显示设置”切换浅／深／系统外观与标准／紧凑密度；“预览状态”可固定显示加载、失败、空结果等状态。
+4. 打开[材料用途演示](http://127.0.0.1:4173/?item=91000005&tab=uses)，点击默认收起的 `[兑换]阿洛`（2 个方案）查看独立材料清单；[获取方式](http://127.0.0.1:4173/?item=91000005&tab=sources)使用同样的折叠规则。途径按明确身份先分组再分页，追查材料后返回可恢复展开。
 
 截图、复现入口和待对接字段见 [页面样式验收记录](docs/page-style-preview.md)。
 
@@ -32,7 +33,7 @@ npm run test:browser
 npm run preview
 ```
 
-`npm run ci` 执行工程检查、16 个规则／查询用例、TypeScript 检查和 Vite 构建。`npm run test:browser` 使用构建后的静态产物，自动在 4175 端口启动并结束测试服务；运行前需完成构建且端口空闲。结果和截图保存在忽略的 `test-results/`；已验收截图另存于仓库文档中。GitHub CI 安装 Chromium 并运行同一套浏览器检查。
+`npm run ci` 执行工程检查、25 个规则／查询／途径分组用例、TypeScript 检查和 Vite 构建。`npm run test:browser` 的 10 组验收使用构建后的静态产物，自动在 4175 端口启动并结束测试服务；运行前需完成构建且端口空闲。结果和截图保存在忽略的 `test-results/`；已验收截图另存于仓库文档中。GitHub CI 安装 Chromium 并运行同一套浏览器检查。
 
 `npm run preview` 在 [4174 端口](http://127.0.0.1:4174/)提供 `dist/` 静态构建预览；`npm run build` 可单独重建。当前构建仅为样式演示，不包含 Service Worker、安装能力或离线缓存。源码 Release 仍标记 `applicationReady: false`；本任务不发布 Release 或部署生产。
 
@@ -57,4 +58,4 @@ React、TypeScript 与 Vite 版本由 `package-lock.json` 固定。已确认布�
 
 ## 当前开发入口
 
-`epic/static-items` 已迁入 [静态道具需求](.scratch/static-items/spec.md)，实施顺序见 [首条静态链](.scratch/static-items/plan.md)。[页面样式任务 02](.scratch/static-items/issues/02-page-style.md)独立交付演示预览；[真实资料任务 01](.scratch/static-items/issues/01-static-item-detail.md)仍等待资料能力核验与正式契约，不能用本预览的验收结果替代。
+`epic/static-items` 已迁入 [静态道具需求](.scratch/static-items/spec.md)，实施顺序见 [首条静态链](.scratch/static-items/plan.md)。[页面样式任务 02](.scratch/static-items/issues/02-page-style.md)交付演示预览，[途径折叠任务 03](.scratch/static-items/issues/03-collapsed-routes.md)追加默认折叠与同途径多方案；[真实资料任务 01](.scratch/static-items/issues/01-static-item-detail.md)仍等待资料能力核验与正式契约，不能用本预览的验收结果替代。

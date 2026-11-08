@@ -50,6 +50,7 @@ export function useNavigation() {
   }, [search]);
   const update: Update = (patch, push = false) => {
     const params = new URLSearchParams(location.search);
+    const fromItem = params.get("item");
     for (const [key, value] of Object.entries(patch))
       value === null || value === ""
         ? params.delete(key)
@@ -61,6 +62,7 @@ export function useNavigation() {
         {
           ...history.state,
           journal: {
+            ...history.state?.journal,
             depth,
             scroll: window.scrollY,
             focus: (document.activeElement as HTMLElement)?.id,
@@ -69,7 +71,11 @@ export function useNavigation() {
         "",
         location.href,
       );
-      history.pushState({ journal: { depth: depth + 1, scroll: 0 } }, "", next);
+      history.pushState(
+        { journal: { depth: depth + 1, scroll: 0, fromItem } },
+        "",
+        next,
+      );
     } else history.replaceState(history.state, "", next);
     setSearch(location.search);
   };
