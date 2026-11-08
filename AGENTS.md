@@ -6,4 +6,4 @@
 2. 定义字段、索引或版本兼容前，阅读 `docs/data-contract.md` 和 `contracts/README.md`。本仓库是 JSON 契约的唯一维护来源。
 3. 创建或更新任务前，阅读 `docs/agents/issue-tracker.md`。本仓库自行保存规格，不以父工作区的任务目录作为持续依赖。
 4. 讨论领域或架构前，阅读本仓库 `GLOSSARY.md` 及相关 `docs/adr/`；迁移旧设计、代码或资料前阅读 `docs/migration.md`。
-5. 正式浏览器只消费静态资源；新增功能须在查询 API 不可达时验收。资料生产规则归 `latale-wiki-data`，不在组件内复制解析规则或运行 AI。
+5. 开发、预览与正式页面的游戏资料均只消费 `latale-wiki-data` 固定产物；修改展示内容、样例或缺失回退前，阅读 `docs/development.md` 的“展示资料来源”。新增功能须在查询 API 不可达时验收；解析规则归资料仓库。

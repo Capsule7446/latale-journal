@@ -4,6 +4,8 @@ Status: ready-for-agent
 
 Work: completed
 
+现行约束（2026-11-09）：本文件以下为历史验收记录；虚构演示许可已由 [04：仅使用真实资料](04-data-only-preview.md) 取代，不得恢复旧样例或生成器。
+
 Feature: `feature/static-items/page-style`
 
 Blocked by: None。本任务使用明确标注的静态演示资料验证样式，不等待真实解析或正式 JSON 契约；真实资料接入仍由 [01](01-static-item-detail.md) 的依赖门槛控制。

@@ -4,6 +4,8 @@ Status: ready-for-agent
 
 Work: completed
 
+现行约束（2026-11-09）：以下样例和预览编号仅为历史验收记录；当前页面仅接收 data 固定产物，见 [04：仅使用真实资料](04-data-only-preview.md)。真实途径未接入时保持未接入，不恢复示例方案名。
+
 Feature: `feature/static-items/page-style`（继续当前样式 feature）
 
 Blocked by: None。样式可用明确标注的演示资料立即实现；真实途径字段由资料仓库的 `static-items/02-route-rule-evidence` 核验，正式资料接入另受契约门槛约束。

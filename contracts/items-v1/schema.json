@@ -1,0 +1,112 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:latale-journal:items-v1",
+  "$defs": {
+    "hash": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "commit": { "type": "string", "pattern": "^[a-f0-9]{40}$" },
+    "version": { "const": "items-v1" },
+    "state": { "enum": ["success", "missing"] },
+    "file": {
+      "type": "object", "additionalProperties": false,
+      "required": ["path", "sha256", "bytes"],
+      "properties": {
+        "path": { "type": "string", "pattern": "^(items\\.json|versions/[a-f0-9]{64}/manifest\\.json)$" },
+        "sha256": { "$ref": "#/$defs/hash" },
+        "bytes": { "type": "integer", "minimum": 1, "maximum": 268435456 }
+      }
+    },
+    "pointer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["formatVersion", "dataVersion", "manifest"],
+      "properties": {
+        "formatVersion": { "$ref": "#/$defs/version" },
+        "dataVersion": { "$ref": "#/$defs/hash" },
+        "manifest": { "$ref": "#/$defs/file" }
+      }
+    },
+    "contract": {
+      "type": "object", "additionalProperties": false,
+      "required": ["sourceCommit", "sha256"],
+      "properties": {
+        "sourceCommit": { "$ref": "#/$defs/commit" },
+        "sha256": { "$ref": "#/$defs/hash" }
+      }
+    },
+    "producer": {
+      "type": "object", "additionalProperties": false,
+      "required": ["name", "commit", "inputSha256", "scope"],
+      "properties": {
+        "name": { "const": "latale-wiki-data" },
+        "commit": { "$ref": "#/$defs/commit" },
+        "inputSha256": { "$ref": "#/$defs/hash" },
+        "scope": { "const": "historical-sqlite-back-half-only" }
+      }
+    },
+    "coverage": {
+      "type": "object", "additionalProperties": false,
+      "required": ["kind", "count", "fullPublicCount", "selection"],
+      "properties": {
+        "kind": { "enum": ["full-public", "producer-test-subset"] },
+        "count": { "type": "integer", "minimum": 1 },
+        "fullPublicCount": { "type": "integer", "minimum": 1 },
+        "selection": { "type": "array", "items": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" } }
+      }
+    },
+    "manifest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["formatVersion", "dataVersion", "contract", "producer", "coverage", "items"],
+      "properties": {
+        "formatVersion": { "$ref": "#/$defs/version" },
+        "dataVersion": { "$ref": "#/$defs/hash" },
+        "contract": { "$ref": "#/$defs/contract" },
+        "producer": { "$ref": "#/$defs/producer" },
+        "coverage": { "$ref": "#/$defs/coverage" },
+        "items": { "$ref": "#/$defs/file" }
+      }
+    },
+    "description": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "value"],
+      "properties": {
+        "status": { "enum": ["success", "missing"] },
+        "value": { "type": "string" }
+      }
+    },
+    "segment": {
+      "type": "object", "additionalProperties": false,
+      "required": ["key", "label", "status"],
+      "properties": {
+        "key": { "type": "string", "minLength": 1 },
+        "label": { "type": ["string", "null"], "minLength": 1 },
+        "status": { "$ref": "#/$defs/state" }
+      }
+    },
+    "category": {
+      "type": "object", "additionalProperties": false,
+      "required": ["status", "segments", "continuation"],
+      "properties": {
+        "status": { "$ref": "#/$defs/state" },
+        "segments": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/segment" } },
+        "continuation": { "enum": ["unresolved", "native_label_rule_end"] }
+      }
+    },
+    "item": {
+      "type": "object", "additionalProperties": false,
+      "required": ["id", "name", "description", "category"],
+      "properties": {
+        "id": { "type": "string", "pattern": "^[1-9][0-9]{0,9}$" },
+        "name": { "type": "string", "minLength": 1 },
+        "description": { "$ref": "#/$defs/description" },
+        "category": { "$ref": "#/$defs/category" }
+      }
+    },
+    "items": {
+      "type": "object", "additionalProperties": false,
+      "required": ["formatVersion", "items"],
+      "properties": {
+        "formatVersion": { "$ref": "#/$defs/version" },
+        "items": { "type": "array", "minItems": 1, "items": { "$ref": "#/$defs/item" } }
+      }
+    }
+  }
+}
